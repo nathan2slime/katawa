@@ -24,7 +24,7 @@ export const manager = async () => {
     isDev &&
       (await prisma.user.update({
         data: {
-          password
+          password: data.password
         },
         where: {
           email: data.email
