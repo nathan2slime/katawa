@@ -4,18 +4,18 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useMutation } from '@tanstack/react-query'
+import dynamic from 'next/dynamic'
 
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 
-import { LoginFormValues, loginSchema } from '~/lib/schemas/login'
+import { LoginFormValues, loginSchema } from '~/lib/login.schema'
 
 import { Page } from '~/types'
 import { loginMutation } from '~/api/mutations/login.mutation'
 import { api } from '~/api/client'
-import dynamic from 'next/dynamic'
 import { authState } from '~/store/auth.state'
 
 const Loading = dynamic(async () => (await import('~/components/loading')).Loading, { ssr: false })
