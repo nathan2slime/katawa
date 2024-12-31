@@ -12,7 +12,7 @@ export class AppLoggerService implements LoggerService {
         colorize: true,
         translateTime: 'SYS:standard',
         singleLine: true
-      }),
+      })
     })
   }
 

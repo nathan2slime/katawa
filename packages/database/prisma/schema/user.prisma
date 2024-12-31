@@ -23,9 +23,10 @@ model UserRole {
 }
 
 model Role {
-    id       String     @id @default(cuid())
-    color    String
-    userRole UserRole[]
+    id         String       @id @default(cuid())
+    color      String
+    permissions Permission[]
+    userRole   UserRole[]
 }
 
 enum Permission {

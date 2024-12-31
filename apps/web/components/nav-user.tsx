@@ -1,9 +1,9 @@
 'use client'
 
 import { User } from '@kwa/database'
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from 'lucide-react'
+import { BadgeCheck, Bell, ChevronsUpDown, LogOut } from 'lucide-react'
 
-import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
+import { Avatar, AvatarFallback } from '~/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,

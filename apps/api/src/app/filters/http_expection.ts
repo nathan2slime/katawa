@@ -1,5 +1,6 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common'
 import { AbstractHttpAdapter } from '@nestjs/core'
+import { log } from 'node:console'
 import { Request, Response } from 'express'
 
 import { AppLoggerService } from '~/logger/logger.service'
@@ -31,11 +32,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
   catch(exception: Error, host: ArgumentsHost): void {
     const httpAdapter = this.httpAdapterHost
-
     const ctx = host.switchToHttp()
 
     const httpStatus = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR
-
     const message = exception.message
 
     exception.message.toLowerCase()
@@ -49,6 +48,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     this.logger.error(exception.message.toLowerCase(), {
       stack: exception.stack
     })
+    log(exception)
 
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus)
   }

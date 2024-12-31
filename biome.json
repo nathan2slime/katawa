@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": []
+    "ignore": ["dist/*.js", ".next/**", ".turbo"]
   },
   "formatter": {
     "enabled": true,
@@ -21,14 +21,20 @@
     "enabled": true
   },
   "linter": {
+    "ignore": ["dist/*", ".next/**", ".turbo"],
     "enabled": true,
     "rules": {
+      "correctness": {
+        "noUnusedImports": "error",
+        "useExhaustiveDependencies": "off",
+        "noUnusedVariables": "error"
+      },
       "complexity": {
         "useOptionalChain": "off"
       },
       "recommended": true,
       "style": {
-        "noNonNullAssertion":"off",
+        "noNonNullAssertion": "off",
         "useImportType": "off"
       }
     }

@@ -1,22 +1,22 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/navigation'
 import { useMutation } from '@tanstack/react-query'
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 
 import { Button } from '~/components/ui/button'
-import { Input } from '~/components/ui/input'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
+import { Input } from '~/components/ui/input'
 
 import { LoginFormValues, loginSchema } from '~/lib/login.schema'
 
-import { Page } from '~/types'
-import { loginMutation } from '~/api/mutations/login.mutation'
 import { api } from '~/api/client'
+import { loginMutation } from '~/api/mutations/login.mutation'
 import { authState } from '~/store/auth.state'
+import { Page } from '~/types'
 
 const Loading = dynamic(async () => (await import('~/components/loading')).Loading, { ssr: false })
 

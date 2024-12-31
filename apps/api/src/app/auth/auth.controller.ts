@@ -4,7 +4,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { AppRequest } from '~/app/app.types'
-import { SignInDto, SignUpDto } from '~/app/auth/auth.dto'
+import { SignInDto } from '~/app/auth/auth.dto'
 import { JwtAuthGuard } from '~/app/auth/auth.guard'
 import { AuthService } from '~/app/auth/auth.service'
 import { JwtRefreshGuard } from '~/app/auth/refresh.guard'

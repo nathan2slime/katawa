@@ -1,8 +1,8 @@
-import { Session } from '@kwa/database'
 import { Request } from 'express'
+import { SessionWithUser } from '~/app/session/session.types'
 
 export type AppRequest = Request & {
-  user: Session
+  user: SessionWithUser
   store: string | undefined
   cookies: Record<string, { refreshToken: string; sessionToken: string }>
 }

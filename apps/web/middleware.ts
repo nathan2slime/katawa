@@ -1,4 +1,3 @@
-import { env } from '@kwa/env'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 

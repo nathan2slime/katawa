@@ -23,7 +23,7 @@ const main = async () => {
 
   app.enableCors({
     credentials: true,
-    origin: env.NODE_ENV === 'production' ? env.CLIENT_URL : true
+    origin: env.CLIENT_URL
   })
 
   app.useGlobalPipes(
