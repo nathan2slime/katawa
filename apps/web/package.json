@@ -8,9 +8,10 @@
     "start": "next start"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
+    "@kwa/database": "workspace:*",
     "@kwa/env": "workspace:*",
     "@kwa/tsconfig": "workspace:*",
-    "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@t3-oss/env-core": "^0.11.1",
@@ -26,6 +27,7 @@
     "react-hot-toast": "^2.4.1",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
+    "valtio": "^2.1.2",
     "zod": "^3.24.0"
   },
   "devDependencies": {
