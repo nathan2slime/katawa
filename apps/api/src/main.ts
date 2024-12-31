@@ -1,5 +1,5 @@
 import { env } from '@kwa/env'
-import { ForbiddenException, ValidationPipe } from '@nestjs/common'
+import { ValidationPipe } from '@nestjs/common'
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
@@ -23,10 +23,7 @@ const main = async () => {
 
   app.enableCors({
     credentials: true,
-    origin:
-      env.NODE_ENV === 'production'
-        ? env.CLIENT_URL
-        : true
+    origin: env.NODE_ENV === 'production' ? env.CLIENT_URL : true
   })
 
   app.useGlobalPipes(
@@ -39,7 +36,7 @@ const main = async () => {
 
   app.useGlobalFilters(new HttpExceptionFilter(), new AllExceptionsFilter(httpAdapter, logger))
 
-  const config = new DocumentBuilder().setTitle('CHII').build()
+  const config = new DocumentBuilder().setTitle('Kwa').build()
 
   app.setGlobalPrefix('api')
 
