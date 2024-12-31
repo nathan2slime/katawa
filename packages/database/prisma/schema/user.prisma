@@ -1,0 +1,32 @@
+model User {
+    id       String @id @default(cuid())
+    email    String @db.VarChar(255)
+    password String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    sessions Session[]
+    roles    UserRole[]
+}
+
+model UserRole {
+    id String @id @default(cuid())
+
+    user   User   @relation(fields: [userId], references: [id])
+    role   Role   @relation(fields: [roleId], references: [id])
+    userId String
+    roleId String
+}
+
+model Role {
+    id       String     @id @default(cuid())
+    color    String
+    userRole UserRole[]
+}
+
+enum Permission {
+    CREATE_PRODUCT
+    EDIT_PRODUCT
+    DELETE_PRODUCT
+}

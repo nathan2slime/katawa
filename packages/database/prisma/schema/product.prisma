@@ -1,0 +1,24 @@
+model Product {
+    id          String           @id @default(cuid())
+    name        String
+    description String?
+    category    String
+    variants    ProductVariant[]
+    createdAt   DateTime         @default(now())
+    updatedAt   DateTime         @updatedAt
+    storeId     String
+}
+
+model ProductVariant {
+    id         String   @id @default(cuid())
+    productId  String
+    product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+    sku        String   @unique
+    attributes Json
+    price      Float
+    stock      Int
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    @@index([sku])
+}

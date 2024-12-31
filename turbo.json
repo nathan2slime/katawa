@@ -1,0 +1,35 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalPassThroughEnv": ["*"],
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^db:generate"],
+      "env": ["NEXT_PUBLIC_*"],
+      "outputs": [".next/**", "dist/**", "!.next/cache/**"]
+    },
+    "studio": {},
+    "start": {},
+    "db:seed": {},
+    "dev": {
+      "persistent": true
+    },
+    "db:generate": {
+      "outputs": ["dist/**"]
+    },
+    "store": {
+      "interactive": true,
+      "cache": false
+    },
+    "db:push": {
+      "cache": false,
+      "interactive": true
+    },
+    "db:migrate:dev": { "cache": false, "interactive": true },
+    "db:migrate:deploy": {
+      "cache": false
+    }
+  }
+}

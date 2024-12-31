@@ -1,0 +1,15 @@
+# dependencies
+node_modules
+
+# output
+dist
+.next
+.turbo
+
+# envs
+.env
+.env.production
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts

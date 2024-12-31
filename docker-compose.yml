@@ -1,0 +1,52 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
+    env_file:
+      - ./.env.production
+  api:
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+    restart: always
+    ports:
+      - 5400:5400
+    env_file:
+      - ./.env.production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    env_file:
+      - ./.env.production
+    command: [
+      "redis-server",
+      "--requirepass", "${REDIS_PASSWORD}"
+    ]
+    volumes:
+      - redis_data:/var/lib/redis/data
+  postgres:
+    image: postgres:alpine
+    ports:
+      - 5432:5432
+    env_file:
+      - ./.env.production
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U postgres]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+volumes:
+  postgres_data:
+  redis_data:

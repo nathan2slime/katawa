@@ -1,0 +1,7 @@
+{
+  "extends": "@kwa/tsconfig/base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "dist"
+  }
+}
