@@ -1,14 +1,14 @@
 'use client'
 
+import { Bot, SquareTerminal } from 'lucide-react'
 import * as React from 'react'
-import { BookOpen, Bot, Settings2, SquareTerminal } from 'lucide-react'
 
+import { User } from '@kwa/database'
+import { useSnapshot } from 'valtio'
 import { NavMain } from '~/components/nav-main'
 import { NavUser } from '~/components/nav-user'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarRail } from '~/components/ui/sidebar'
 import { authState } from '~/store/auth.state'
-import { useSnapshot } from 'valtio'
-import { User } from '@kwa/database'
 
 const data = {
   user: {

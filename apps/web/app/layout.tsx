@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Baloo_2, Titillium_Web } from 'next/font/google'
+import { Titillium_Web } from 'next/font/google'
 import { cn } from '~/lib/utils'
 import type { AppChildren } from '~/types'
 
@@ -12,7 +12,7 @@ export const metadata: Metadata = {}
 
 const baloo = Titillium_Web({
   subsets: ['latin'],
-  weight: ['400', '300', '600', '700', '900', ]
+  weight: ['400', '300', '600', '700', '900']
 })
 
 const RootLayout = ({ children }: Readonly<AppChildren>) => (

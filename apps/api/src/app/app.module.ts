@@ -1,5 +1,5 @@
 import { env } from '@kwa/env'
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
 
@@ -28,6 +28,4 @@ import configuration from '~/config'
   controllers: [],
   providers: []
 })
-export class AppModule  {
- 
-}
+export class AppModule {}

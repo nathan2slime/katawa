@@ -1,5 +1,5 @@
-import bcryptjs from 'bcryptjs'
 import { faker } from '@faker-js/faker/locale/en'
+import bcryptjs from 'bcryptjs'
 
 import { prisma } from './database.mjs'
 import { logger } from './logger.mjs'

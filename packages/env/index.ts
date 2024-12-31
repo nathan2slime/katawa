@@ -17,7 +17,7 @@ export const env = createEnv({
   },
   clientPrefix: 'NEXT_PUBLIC_',
   client: {
-    NEXT_PUBLIC_API_URL: z.string().url(),
+    NEXT_PUBLIC_API_URL: z.string().url()
   },
   runtimeEnv: {
     CLIENT_URL: process.env.CLIENT_URL,
@@ -33,5 +33,5 @@ export const env = createEnv({
     REDIS_PASSWORD: process.env.REDIS_PASSWORD
   },
   skipValidation: process.env.NODE_ENV !== 'development' || typeof window !== 'undefined',
-  emptyStringAsUndefined: true,
+  emptyStringAsUndefined: true
 })
