@@ -7,7 +7,7 @@ export type AuthState<T = Session | null> = {
   session: T
 }
 
-export const storageKey = '@nbun/web'
+export const storageKey = '@kwa/web'
 
 const INITIAL: AuthState = {
   logged: false,

@@ -78,23 +78,4 @@ export class AuthController {
 
     return res.status(HttpStatus.OK).json(data)
   }
-
-  @Post('signup')
-  @ApiResponse({ status: 200 })
-  async signUp(@Body() body: SignUpDto, @Res() res: Response) {
-    const data = await this.authService.signUp(body)
-
-    const { accessToken, refreshToken } = data
-
-    res.cookie(
-      this.configService.get('AUTH_COOKIE'),
-      { accessToken, refreshToken },
-      {
-        httpOnly: true,
-        expires: new Date(Date.now() + require('ms')(this.configService.get('REFRESH_TOKEN_EXPIRES_IN')))
-      }
-    )
-
-    return res.status(HttpStatus.OK).json(data)
-  }
 }

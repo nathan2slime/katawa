@@ -1,7 +1,10 @@
 model User {
-    id       String @id @default(cuid())
-    email    String @db.VarChar(255)
-    password String
+    id        String  @id @default(cuid())
+    firstName String
+    lastName  String
+    email     String  @unique @db.VarChar(255)
+    password  String
+    owner     Boolean @default(false)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
