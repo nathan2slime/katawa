@@ -1,7 +1,12 @@
 'use client'
 
 import { User } from '@kwa/database'
+import { useMutation } from '@tanstack/react-query'
 import { BadgeCheck, Bell, ChevronsUpDown, LogOut } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+
+import { api } from '~/api/client'
+import { signoutMutation } from '~/api/mutations/signout.mutation'
 import { ThemeToggle } from '~/components/theme-toggle'
 
 import { Avatar, AvatarFallback } from '~/components/ui/avatar'
@@ -21,9 +26,22 @@ export function NavUser({
 }: {
   user: User
 }) {
+  const router = useRouter()
   const { isMobile } = useSidebar()
 
   const name = `${user.firstName} ${user.lastName}`
+
+  const signout = useMutation({
+    mutationKey: ['signout'],
+    mutationFn: () => signoutMutation({ api, payload: undefined })
+  })
+
+  const onSignout = async () => {
+    await signout.mutateAsync()
+
+    router.replace('/auth/signing?signout=true')
+  }
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -65,7 +83,7 @@ export function NavUser({
               <ThemeToggle />
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={onSignout}>
               <LogOut />
               Log out
             </DropdownMenuItem>

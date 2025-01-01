@@ -3,8 +3,8 @@ import { Titillium_Web } from 'next/font/google'
 import { cn } from '~/lib/utils'
 import type { AppChildren } from '~/types'
 
-import { Providers } from '~/components/providers'
 import { AuthGuard } from '~/components/auth-guard'
+import { Providers } from '~/components/providers'
 
 import '~/app/globals.css'
 
@@ -17,7 +17,7 @@ const baloo = Titillium_Web({
 
 const RootLayout = ({ children }: Readonly<AppChildren>) => (
   <html lang="en">
-    <body className={cn(baloo.className)}>
+    <body className={cn(baloo.className, 'overflow-hidden')}>
       <Providers>
         <AuthGuard>{children}</AuthGuard>
       </Providers>

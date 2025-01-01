@@ -16,5 +16,7 @@ export type Pagination<T> = {
   total: number
   pages: number
   perPage: number
+  sortField: string
+  sortOrder: SortOrder
   page: number
 }

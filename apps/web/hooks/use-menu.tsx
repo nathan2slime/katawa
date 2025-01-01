@@ -1,4 +1,4 @@
-import { Permission, User } from '@kwa/database'
+import { User } from '@kwa/database'
 import { Bot, SquareTerminal } from 'lucide-react'
 import { useCallback } from 'react'
 

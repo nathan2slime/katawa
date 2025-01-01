@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useSnapshot } from 'valtio'
 
 import { cn } from '~/lib/utils'
@@ -22,8 +23,12 @@ const removeThemeClasses = () => {
 export const ThemeProvider = ({ children }: AppChildren) => {
   const { theme } = useSnapshot(appState)
 
-  removeThemeClasses()
-  document.body.classList.add(theme)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      removeThemeClasses()
+      document.body.classList.add(theme)
+    }
+  }, [theme])
 
   return <div className={cn(theme)}>{children}</div>
 }

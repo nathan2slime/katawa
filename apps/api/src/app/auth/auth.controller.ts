@@ -5,8 +5,8 @@ import { Response } from 'express'
 
 import { AppRequest } from '~/app/app.types'
 import { SignInDto } from '~/app/auth/auth.dto'
-import { JwtAuthGuard } from '~/app/guards/auth.guard'
 import { AuthService } from '~/app/auth/auth.service'
+import { JwtAuthGuard } from '~/app/guards/auth.guard'
 import { JwtRefreshGuard } from '~/app/guards/refresh.guard'
 import { AppConfig } from '~/config'
 

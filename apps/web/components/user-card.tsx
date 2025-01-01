@@ -1,9 +1,9 @@
-import { MoreVertical, Edit, Trash, Settings } from 'lucide-react'
 import { User } from '@kwa/database'
 import { format } from 'date-fns'
+import { Edit, MoreVertical, Settings, Trash } from 'lucide-react'
 
-import { Card, CardContent } from '~/components/ui/card'
 import { Button } from '~/components/ui/button'
+import { Card, CardContent } from '~/components/ui/card'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '~/components/ui/dropdown-menu'
 import { Separator } from '~/components/ui/separator'
 
@@ -37,15 +37,15 @@ export const UserCard = ({ user, onEdit, onDelete, onManage, loading }: Props) =
   if (loading) return <Skeleton />
 
   return (
-    <Card className="w-full max-w-xs">
+    <Card className="w-full max-w-[320px]">
       <CardContent className="p-4">
         <div className="flex justify-between items-start gap-4">
           <div className="w-full">
-            <h2 className="text-lg font-bold truncate">{`${user.firstName} ${user.lastName}`}</h2>
+            <h2 className="text-base font-bold truncate">{`${user.firstName} ${user.lastName}`}</h2>
 
             <Separator className="mb-3" />
 
-            <p className="text-base text-foreground">{user.email}</p>
+            <p className="text-sm text-foreground">{user.email}</p>
             <p className="text-sm text-card-foreground mt-1">Criado em: {format(user.createdAt, 'dd/MM/yyyy')}</p>
           </div>
 
@@ -76,4 +76,3 @@ export const UserCard = ({ user, onEdit, onDelete, onManage, loading }: Props) =
     </Card>
   )
 }
-

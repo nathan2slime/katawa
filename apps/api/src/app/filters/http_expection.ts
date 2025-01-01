@@ -1,6 +1,6 @@
+import { log } from 'node:console'
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common'
 import { AbstractHttpAdapter } from '@nestjs/core'
-import { log } from 'node:console'
 import { Request, Response } from 'express'
 
 import { AppLoggerService } from '~/logger/logger.service'
