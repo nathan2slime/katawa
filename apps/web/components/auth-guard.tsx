@@ -8,7 +8,7 @@ import { getMyRolesQuery } from '~/api/queries/get-my-roles.query'
 import { getSesssionQuery } from '~/api/queries/get-session.query'
 import { AuthProvider } from '~/components/auth-provider'
 import { AppChildren } from '~/types'
-import { SessionWithUser } from '~/types/auth.types'
+import { SessionWithUser } from '~/types/auth'
 
 export const AuthGuard = async ({ children }: AppChildren) => {
   const header = await headers()

@@ -1,17 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import { useSnapshot } from 'valtio'
 
 import { AppSidebar } from '~/components/app-sidebar'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '~/components/ui/breadcrumb'
 import { Separator } from '~/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '~/components/ui/sidebar'
-import { authState } from '~/store/auth.state'
 
-const Users = () => {
-  const { permissions } = useSnapshot(authState)
-
+const Products = () => {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -39,10 +35,10 @@ const Users = () => {
             </Breadcrumb>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{JSON.stringify(permissions)}</div>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">Products</div>
       </SidebarInset>
     </SidebarProvider>
   )
 }
 
-export default Users
+export default Products
