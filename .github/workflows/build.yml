@@ -1,4 +1,4 @@
-name: Build
+name: check
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: lint
+      - name: Lint
         run: pnpm lint
   build:
     runs-on: ubuntu-latest
@@ -45,5 +45,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: kwa/api
+      - name: Build
         run: pnpm build --filter=@kwa/api...
