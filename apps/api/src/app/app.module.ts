@@ -9,6 +9,7 @@ import { RedisModule } from '~/database/redis/redis.module'
 import { LoggerModule } from '~/logger/logger.module'
 
 import configuration from '~/config'
+import { RoleModule } from '~/app/role/role.module'
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import configuration from '~/config'
     AuthModule,
     RedisModule,
     PrismaModule,
+    RoleModule,
     JwtModule.register({
       global: true,
       secret: env.SESSION_KEY

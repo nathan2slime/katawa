@@ -21,11 +21,15 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     await this.$disconnect()
   }
 
-  exclude<T, Key extends keyof T>(data: T, keys: Key[]): Omit<T, Key> {
-    return Object.fromEntries(
-      Object.entries(data).filter(([key]) => {
-        return !keys.includes(key as Key) && data[key] != null
-      })
-    ) as Omit<T, Key>
+  exclude<T, Key extends T extends Array<unknown> ? keyof T[0] : keyof T>(data: T, keys: Key[]) {
+    type Data = T extends Array<unknown> ? T[0] : T
+
+    type FinalData = Omit<Data, Key>
+
+    const onFilter = (payload: Data | T) => Object.fromEntries(Object.entries(payload).filter(([key]) => !keys.includes(key as Key) && payload[key] != null))
+
+    const final = Array.isArray(data) ? data.map(e => onFilter(e)) : onFilter(data)
+
+    return final as unknown as FinalData
   }
 }
