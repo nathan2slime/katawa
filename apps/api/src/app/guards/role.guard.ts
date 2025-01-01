@@ -24,7 +24,7 @@ export class RoleGuard implements CanActivate {
 
       if (permissions) {
         const roles = await this.roleService.getByUser(session.userId)
-        const currentPermissions = [...new Set(...roles.map(e => e.permissions))]
+        const currentPermissions = [...new Set(roles.flatMap(e => e.permissions))]
 
         return currentPermissions.every(permission => permissions.includes(permission))
       }

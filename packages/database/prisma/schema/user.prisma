@@ -24,12 +24,17 @@ model UserRole {
 
 model Role {
     id         String       @id @default(cuid())
+    name String @unique
     color      String
     permissions Permission[]
     userRole   UserRole[]
 }
 
 enum Permission {
+    CREATE_USER
+    DELETE_USER
+    EDIT_USER
+    UPDATE_USER
     CREATE_PRODUCT
     EDIT_PRODUCT
     DELETE_PRODUCT
