@@ -4,9 +4,9 @@ import { cn } from '~/lib/utils'
 import type { AppChildren } from '~/types'
 
 import { Providers } from '~/components/providers'
+import { AuthGuard } from '~/components/auth-guard'
 
 import '~/app/globals.css'
-import { AuthGuard } from '~/components/auth-guard'
 
 export const metadata: Metadata = {}
 

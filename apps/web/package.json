@@ -25,6 +25,7 @@
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "ldrs": "^1.0.2",
     "lucide-react": "^0.460.0",
     "next": "^15.0.1",
@@ -38,6 +39,7 @@
     "zod": "^3.24.0"
   },
   "devDependencies": {
+    "@types/date-fns": "^2.6.3",
     "@types/node": "^20",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",

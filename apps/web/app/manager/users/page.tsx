@@ -1,16 +1,35 @@
-'use client'
-
+import { QueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
-import { useSnapshot } from 'valtio'
+import { getUsersQuery } from '~/api/queries/get-users.query'
+import { api } from '~/api/server'
 
 import { AppSidebar } from '~/components/app-sidebar'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '~/components/ui/breadcrumb'
 import { Separator } from '~/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '~/components/ui/sidebar'
-import { authState } from '~/store/auth.state'
+import { ListUsers } from '~/components/list-users'
+import { PaginationArgs, SortOrder } from '~/types/pagination'
 
-const Users = () => {
-  const { permissions } = useSnapshot(authState)
+export const dynamic = 'force-dynamic'
+
+const Users = async () => {
+  const client = new QueryClient()
+
+  const args: PaginationArgs = {
+    page: 1,
+    perPage: 12,
+    query: '',
+    sortField: 'createdAt',
+    sortOrder: SortOrder.ASC
+  }
+  const data = await client.fetchQuery({
+    queryKey: ['get-users'],
+    queryFn: () =>
+      getUsersQuery({
+        api,
+        payload: args
+      })
+  })
 
   return (
     <SidebarProvider>
@@ -39,7 +58,9 @@ const Users = () => {
             </Breadcrumb>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{JSON.stringify(permissions)}</div>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          <ListUsers users={data} />
+        </div>
       </SidebarInset>
     </SidebarProvider>
   )

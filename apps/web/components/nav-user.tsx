@@ -2,6 +2,7 @@
 
 import { User } from '@kwa/database'
 import { BadgeCheck, Bell, ChevronsUpDown, LogOut } from 'lucide-react'
+import { ThemeToggle } from '~/components/theme-toggle'
 
 import { Avatar, AvatarFallback } from '~/components/ui/avatar'
 import {
@@ -61,6 +62,7 @@ export function NavUser({
                 <Bell />
                 Notifications
               </DropdownMenuItem>
+              <ThemeToggle />
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
