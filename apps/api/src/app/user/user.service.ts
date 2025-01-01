@@ -84,6 +84,8 @@ export class UserService {
       data: this.prisma.exclude<User[], 'password'>(data, ['password']),
       pages,
       perPage,
+      sortField,
+      sortOrder,
       page
     }
   }

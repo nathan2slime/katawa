@@ -1,4 +1,4 @@
-import { Permission, Session } from '@kwa/database'
+import { Permission } from '@kwa/database'
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'

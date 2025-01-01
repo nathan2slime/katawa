@@ -13,6 +13,8 @@ import { Input } from '~/components/ui/input'
 
 import { LoginFormValues, loginSchema } from '~/lib/login.schema'
 
+import { useEffect } from 'react'
+import { z } from 'zod'
 import { api } from '~/api/client'
 import { loginMutation } from '~/api/mutations/login.mutation'
 import { authState } from '~/store/auth.state'
@@ -20,7 +22,7 @@ import { Page } from '~/types'
 
 const Loading = dynamic(async () => (await import('~/components/loading')).Loading, { ssr: false })
 
-const Login: Page = () => {
+const Login: Page = ({ searchParams }) => {
   const router = useRouter()
 
   const form = useForm<LoginFormValues>({
@@ -46,6 +48,22 @@ const Login: Page = () => {
       router.push('/')
     }
   }
+
+  useEffect(() => {
+    searchParams.then(params => {
+      const args = z.object({ signout: z.coerce.boolean() }).safeParse(params)
+      console.log()
+
+      if (args.success) {
+        if (args.data.signout) {
+          console.log(args)
+
+          authState.logged = false
+          authState.session = null
+        }
+      }
+    })
+  }, [])
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">

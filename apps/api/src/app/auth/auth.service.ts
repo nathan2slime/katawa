@@ -5,7 +5,7 @@ import { compare } from 'bcryptjs'
 import { SignInDto } from '~/app/auth/auth.dto'
 import { SessionService } from '~/app/session/session.service'
 import { UserService } from '~/app/user/user.service'
-import {  INVALID_CREDENTIALS_MESSAGE, USER_NOT_FOUND_MESSAGE } from '~/errors'
+import { INVALID_CREDENTIALS_MESSAGE, USER_NOT_FOUND_MESSAGE } from '~/errors'
 
 @Injectable()
 export class AuthService {
@@ -27,8 +27,6 @@ export class AuthService {
 
     return session
   }
-
- 
 
   async signOut(session: Session) {
     await this.sessionService.expire(session.id)

@@ -17,7 +17,6 @@ export class RoleGuard implements CanActivate {
     const session = req.user
 
     if (session) {
-        
       if (session.user.owner) return true
 
       const permissions = this.reflector.get(Permissions, context.getHandler()) as Permission[]

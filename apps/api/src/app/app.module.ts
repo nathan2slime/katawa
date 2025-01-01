@@ -8,8 +8,8 @@ import { PrismaModule } from '~/database/prisma/prisma.module'
 import { RedisModule } from '~/database/redis/redis.module'
 import { LoggerModule } from '~/logger/logger.module'
 
-import configuration from '~/config'
 import { RoleModule } from '~/app/role/role.module'
+import configuration from '~/config'
 
 @Module({
   imports: [

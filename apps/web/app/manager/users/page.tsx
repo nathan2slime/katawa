@@ -1,27 +1,44 @@
 import { QueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
+
 import { getUsersQuery } from '~/api/queries/get-users.query'
 import { api } from '~/api/server'
 
+import { z } from 'zod'
 import { AppSidebar } from '~/components/app-sidebar'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '~/components/ui/breadcrumb'
-import { Separator } from '~/components/ui/separator'
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '~/components/ui/sidebar'
+import { Header } from '~/components/header'
 import { ListUsers } from '~/components/list-users'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '~/components/ui/breadcrumb'
+import { ScrollArea } from '~/components/ui/scroll-area'
+import { SidebarInset, SidebarProvider } from '~/components/ui/sidebar'
+import { Page } from '~/types'
 import { PaginationArgs, SortOrder } from '~/types/pagination'
 
 export const dynamic = 'force-dynamic'
 
-const Users = async () => {
+const schema = z.object({
+  query: z.string().default(''),
+  perPage: z.coerce.number().default(15),
+  sortOrder: z.nativeEnum(SortOrder).default(SortOrder.ASC),
+  sortField: z.string().default('createdAt'),
+  page: z.coerce.number().default(1)
+})
+
+const Users: Page = async ({ searchParams }) => {
   const client = new QueryClient()
 
-  const args: PaginationArgs = {
-    page: 1,
-    perPage: 12,
-    query: '',
-    sortField: 'createdAt',
-    sortOrder: SortOrder.ASC
-  }
+  const params = schema.safeParse(await searchParams)
+
+  const args: PaginationArgs = params.success
+    ? params.data
+    : {
+        page: 1,
+        perPage: 15,
+        query: '',
+        sortField: 'createdAt',
+        sortOrder: SortOrder.ASC
+      }
+
   const data = await client.fetchQuery({
     queryKey: ['get-users'],
     queryFn: () =>
@@ -35,32 +52,30 @@ const Users = async () => {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink>
-                    <Link href="#">Manager</Link>
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
+        <Header>
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink>
+                  <Link href="#">Manager</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
 
-                <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbSeparator className="hidden md:block" />
 
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink>
-                    <Link href="/manager/users">Users</Link>
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink>
+                  <Link href="/manager/users">Users</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </Header>
+        <ScrollArea>
+          <div className="flex pt-16 flex-1 w-full h-screen flex-col gap-4">
+            <ListUsers users={data} />
           </div>
-        </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <ListUsers users={data} />
-        </div>
+        </ScrollArea>
       </SidebarInset>
     </SidebarProvider>
   )
