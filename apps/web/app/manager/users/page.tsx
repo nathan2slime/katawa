@@ -73,7 +73,7 @@ const Users: Page = async ({ searchParams }) => {
         </Header>
         <ScrollArea>
           <div className="flex pt-16 flex-1 w-full h-screen flex-col gap-4">
-            <ListUsers users={data} />
+            <ListUsers query={args.query} users={data} />
           </div>
         </ScrollArea>
       </SidebarInset>
