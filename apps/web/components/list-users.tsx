@@ -7,14 +7,14 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { UserCard } from '~/components/user-card'
 
+import { Button } from '~/components/ui/button'
+import { Input } from '~/components/ui/input'
 import { Separator } from '~/components/ui/separator'
 import { Pagination as PaginationResult, SortOrder } from '~/types/pagination'
-import { Input } from '~/components/ui/input'
-import { Button } from '~/components/ui/button'
 
-import { debounce } from '~/lib/debounce'
-import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert'
 import { Search } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert'
+import { debounce } from '~/lib/debounce'
 
 type Props = {
   query: string
