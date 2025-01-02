@@ -15,6 +15,7 @@ import { Pagination as PaginationResult, SortOrder } from '~/types/pagination'
 import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { DeleteUser } from '~/components/delete-user'
+import { EditUser } from '~/components/edit-user'
 import { NewUser } from '~/components/new-user'
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert'
 import { debounce } from '~/lib/debounce'
@@ -27,6 +28,7 @@ type Props = {
 export const ListUsers = ({ query, users: { data, pages, page, perPage, sortField, sortOrder } }: Props) => {
   const [users, setUsers] = useState(data)
   const [userDeleted, setUserDeleted] = useState<string>()
+  const [userUpdated, setUserUpdated] = useState<User>()
 
   const router = useRouter()
 
@@ -102,8 +104,15 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
           </AlertDescription>
         </Alert>
       ) : (
-        users.map(e => <UserCard key={e.id} user={e} onDelete={e => setUserDeleted(e.id)} onEdit={e => console.log(e)} onManage={e => console.log(e)} />)
+        users.map(e => <UserCard key={e.id} user={e} onDelete={e => setUserDeleted(e.id)} onEdit={e => setUserUpdated(e)} onManage={e => console.log(e)} />)
       )}
+
+      <EditUser
+        isOpen={!!userUpdated}
+        onCreate={user => setUsers(users => users.map(e => (e.id === user.id ? user : e)))}
+        data={userUpdated}
+        onOpenChange={() => setUserUpdated(undefined)}
+      />
 
       <DeleteUser
         onSuccess={userId => setUsers(users => users.filter(e => e.id !== userId))}
@@ -111,6 +120,7 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
         userId={userDeleted}
         onOpenChange={() => setUserDeleted(undefined)}
       />
+
       <Separator className="my-2" />
 
       <div className="w-full flex justify-center">

@@ -162,7 +162,7 @@ const Sidebar = React.forwardRef<
           }
           side={side}
         >
-          <div className="flex h-full w-full flex-col bg-background/40 backdrop-blur-md">{children}</div>
+          <div className="flex h-full w-full flex-col bg-background backdrop-blur-md">{children}</div>
         </SheetContent>
       </Sheet>
     )

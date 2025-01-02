@@ -3,6 +3,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 
 import { AppRequest } from '~/app/app.types'
+import { Roles } from '~/app/auth/auth.decorator'
 import { RoleService } from '~/app/role/role.service'
 
 @Injectable()
@@ -19,7 +20,7 @@ export class RoleGuard implements CanActivate {
     if (session) {
       if (session.user.owner) return true
 
-      const permissions = this.reflector.get(Permissions, context.getHandler()) as Permission[]
+      const permissions = this.reflector.get(Roles, context.getHandler()) as Permission[]
 
       if (permissions) {
         const roles = await this.roleService.getByUser(session.userId)
