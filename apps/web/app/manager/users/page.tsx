@@ -1,18 +1,18 @@
 import { QueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
+import { z } from 'zod'
 
 import { getUsersQuery } from '~/api/queries/get-users.query'
 import { api } from '~/api/server'
 
-import { z } from 'zod'
 import { AppSidebar } from '~/components/app-sidebar'
 import { Header } from '~/components/header'
 import { ListUsers } from '~/components/list-users'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '~/components/ui/breadcrumb'
 import { ScrollArea } from '~/components/ui/scroll-area'
+import { PaginationArgs, SortOrder } from '~/types/pagination'
 import { SidebarInset, SidebarProvider } from '~/components/ui/sidebar'
 import { Page } from '~/types'
-import { PaginationArgs, SortOrder } from '~/types/pagination'
 
 export const dynamic = 'force-dynamic'
 
@@ -70,9 +70,10 @@ const Users: Page = async ({ searchParams }) => {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
+
         </Header>
         <ScrollArea>
-          <div className="flex pt-16 flex-1 w-full h-screen flex-col gap-4">
+          <div className="flex group-has-[[data-collapsible=icon]]/sidebar-wrapper:pt-12 pt-16 flex-1 w-full h-screen flex-col gap-4">
             <ListUsers query={args.query} users={data} />
           </div>
         </ScrollArea>

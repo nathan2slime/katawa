@@ -1,6 +1,6 @@
 import { User } from '@kwa/database'
-import { QueryFnArgs } from '~/api/query'
 
+import { QueryFnArgs } from '~/api/query'
 import { Pagination, PaginationArgs } from '~/types/pagination'
 
 export const getUsersQuery = async ({ api, payload }: QueryFnArgs<PaginationArgs>) => {

@@ -9,7 +9,7 @@ export const Header = ({ children }: AppChildren) => {
       <div className="flex items-center gap-2 px-4">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mr-2 h-4" />
-        {children}
+        <div className="w-full gap-10 justify-between items-center flex">{children}</div>
       </div>
     </header>
   )

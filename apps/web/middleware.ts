@@ -21,7 +21,7 @@ const middleware = async (req: NextRequest) => {
   headers.set('Content-Security-Policy', contentSecurityPolicyHeaderValue)
   headers.set('x-nonce', nonce)
 
-  return NextResponse.next({ headers })
+  return NextResponse.next({ headers, request: { headers } })
 }
 
 export const config = {
@@ -30,6 +30,7 @@ export const config = {
       source: '/((?!api/|_next/static|_next/image|favicon.ico|[\\w-]+\\.\\w+).*)',
       missing: [
         { type: 'header', key: 'next-router-prefetch' },
+        { type: 'header', key: 'next-action' },
         { type: 'header', key: 'purpose', value: 'prefetch' }
       ]
     }
