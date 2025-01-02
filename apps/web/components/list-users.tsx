@@ -13,6 +13,8 @@ import { Separator } from '~/components/ui/separator'
 import { Pagination as PaginationResult, SortOrder } from '~/types/pagination'
 
 import { Search } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { NewUser } from '~/components/new-user'
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert'
 import { debounce } from '~/lib/debounce'
 
@@ -22,6 +24,8 @@ type Props = {
 }
 
 export const ListUsers = ({ query, users: { data, pages, page, perPage, sortField, sortOrder } }: Props) => {
+  const [users, setUsers] = useState(data)
+
   const router = useRouter()
 
   const buildPages = () => {
@@ -48,9 +52,13 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
 
   const handleChange = debounce((query: string) => onSearch({ query, page: 1 }), 300)
 
+  useEffect(() => {
+    setUsers(data)
+  }, [data])
+
   return (
-    <div className="flex flex-wrap gap-3 p-4 justify-center">
-      <div className="flex flex-wrap w-full justify-between items-center gap-4">
+    <div className="flex flex-wrap gap-3 py-4 justify-center">
+      <div className="flex flex-wrap w-full px-4 justify-between items-center gap-4">
         <Input type="text" placeholder="Pesquisar" onChange={e => handleChange(e.target.value)} className="w-fit flex-1 max-w-[300px]" />
         <div className="flex items-center gap-2 w-fit flex-2">
           <Select value={sortField} onValueChange={value => onSearch({ sortField: value })}>
@@ -66,11 +74,28 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
           <Button variant="outline" onClick={() => onSearch({ sortOrder: sortOrder === SortOrder.ASC ? SortOrder.DESC : SortOrder.ASC })}>
             {sortOrder === SortOrder.ASC ? '↑' : '↓'}
           </Button>
+          <Select
+            onValueChange={value => {
+              onSearch({ perPage: value })
+            }}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder={perPage.toString()} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="15">15 </SelectItem>
+              <SelectItem value="30">30 </SelectItem>
+              <SelectItem value="45">40 </SelectItem>
+              <SelectItem value="60">60</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <NewUser onCreate={e => setUsers([...users, e])} />
         </div>
       </div>
       <Separator className="my-2" />
 
-      {data.length === 0 ? (
+      {users.length === 0 ? (
         <Alert>
           <Search className="h-4 w-4" />
           <AlertTitle>Heads up!</AlertTitle>
@@ -79,7 +104,7 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
           </AlertDescription>
         </Alert>
       ) : (
-        data.map(e => <UserCard key={e.id} user={e} onDelete={e => console.log(e)} onEdit={e => console.log(e)} onManage={e => console.log(e)} />)
+        users.map(e => <UserCard key={e.id} user={e} onDelete={e => console.log(e)} onEdit={e => console.log(e)} onManage={e => console.log(e)} />)
       )}
 
       <Separator className="my-2" />
@@ -96,21 +121,6 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
             </PaginationItem>
           </PaginationContent>
         </Pagination>
-        <Select
-          onValueChange={value => {
-            onSearch({ perPage: value })
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Itens" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="15">15 </SelectItem>
-            <SelectItem value="30">30 </SelectItem>
-            <SelectItem value="45">40 </SelectItem>
-            <SelectItem value="60">60</SelectItem>
-          </SelectContent>
-        </Select>
       </div>
     </div>
   )

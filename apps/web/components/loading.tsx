@@ -16,5 +16,5 @@ export const Loading = ({ name, ...props }: Props) => {
 
   component.register()
 
-  return createElement(tag, props)
+  return createElement(tag, { ...props, color: '#F4F4F4' })
 }

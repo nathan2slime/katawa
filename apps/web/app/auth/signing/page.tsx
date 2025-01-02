@@ -1,22 +1,21 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
+import { useActionState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { z } from 'zod'
 
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Input } from '~/components/ui/input'
 
-import { LoginFormValues, loginSchema } from '~/lib/login.schema'
+import { LoginFormValues, loginSchema } from '~/lib/schemas/login.schema'
 
-import { useEffect } from 'react'
-import { z } from 'zod'
-import { api } from '~/api/client'
-import { loginMutation } from '~/api/mutations/login.mutation'
+import { loginAction } from '~/api/actions/login.action'
 import { authState } from '~/store/auth.state'
 import { Page } from '~/types'
 
@@ -25,6 +24,7 @@ const Loading = dynamic(async () => (await import('~/components/loading')).Loadi
 const Login: Page = ({ searchParams }) => {
   const router = useRouter()
 
+  const [state, action, pending] = useActionState(loginAction, null)
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -33,37 +33,30 @@ const Login: Page = ({ searchParams }) => {
     }
   })
 
-  const mutation = useMutation({
-    mutationKey: ['login'],
-    mutationFn: (payload: LoginFormValues) => loginMutation({ api, payload })
-  })
-
-  const onSubmit = async (data: LoginFormValues) => {
-    const session = await mutation.mutateAsync(data)
-
-    if (session) {
-      authState.logged = true
-      authState.session = session
-
-      router.push('/')
-    }
-  }
-
   useEffect(() => {
     searchParams.then(params => {
       const args = z.object({ signout: z.coerce.boolean() }).safeParse(params)
-      console.log()
 
       if (args.success) {
         if (args.data.signout) {
-          console.log(args)
-
           authState.logged = false
           authState.session = null
         }
       }
     })
   }, [])
+
+  useEffect(() => {
+    if (state) {
+      if (state.error) {
+        toast.error(state.message)
+      } else {
+        toast.success(state.message)
+
+        router.push('/')
+      }
+    }
+  }, [state])
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
@@ -74,7 +67,7 @@ const Login: Page = ({ searchParams }) => {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form action={action} className="space-y-4">
               <FormField
                 control={form.control}
                 name="email"
@@ -101,8 +94,9 @@ const Login: Page = ({ searchParams }) => {
                   </FormItem>
                 )}
               />
+
               <Button type="submit" className="w-full uppercase font-medium">
-                {mutation.status === 'pending' ? <Loading name="cardio" size="40" speed="2" /> : 'Entrar'}
+                {pending ? <Loading name="cardio" size="22" speed="2" /> : 'Entrar'}
               </Button>
             </form>
           </Form>

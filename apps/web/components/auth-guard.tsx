@@ -13,9 +13,12 @@ import { SessionWithUser } from '~/types/auth'
 export const AuthGuard = async ({ children }: AppChildren) => {
   const header = await headers()
   const pathname = header.get('x-pathname') as string
+  const referer = header.get('referer') as string
   const client = new QueryClient()
 
-  const inAuthPage = pathname.includes('auth')
+  const path = pathname || new URL(referer).pathname
+
+  const inAuthPage = path && path.includes('auth')
 
   let session: SessionWithUser | null = null
 
@@ -29,8 +32,6 @@ export const AuthGuard = async ({ children }: AppChildren) => {
       queryKey: ['refresh-session'],
       queryFn: refreshSessionMutation
     })
-
-  if (inAuthPage && session) redirect('/')
 
   if (!inAuthPage && !session) redirect('/auth/signing')
 
