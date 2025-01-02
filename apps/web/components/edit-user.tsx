@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form'
 import { editUserAction } from '~/api/actions/edit-user.action'
 
 import { Button } from '~/components/ui/button'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '~/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Input } from '~/components/ui/input'
 import { EditUserFormValues, editUserSchema } from '~/lib/schemas/edit-user.schema'

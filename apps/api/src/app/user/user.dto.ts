@@ -35,4 +35,3 @@ export class UpdateUserDto {
   @ApiProperty({ required: false })
   lastName: string
 }
-

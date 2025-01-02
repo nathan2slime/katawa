@@ -1,7 +1,7 @@
 'use client'
 
 import { Unauthorized } from '~/components/unauthorized'
-import { Page } from '~/types';
+import { Page } from '~/types'
 
 const Handle: Page = () => {
   return (
