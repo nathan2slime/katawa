@@ -17,6 +17,8 @@ import { useEffect, useState } from 'react'
 import { NewUser } from '~/components/new-user'
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert'
 import { debounce } from '~/lib/debounce'
+import { createPortal } from 'react-dom'
+import { DeleteUser } from '~/components/delete-user'
 
 type Props = {
   query: string
@@ -25,6 +27,7 @@ type Props = {
 
 export const ListUsers = ({ query, users: { data, pages, page, perPage, sortField, sortOrder } }: Props) => {
   const [users, setUsers] = useState(data)
+  const [userDeleted, setUserDeleted] = useState<string>()
 
   const router = useRouter()
 
@@ -104,9 +107,15 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
           </AlertDescription>
         </Alert>
       ) : (
-        users.map(e => <UserCard key={e.id} user={e} onDelete={e => console.log(e)} onEdit={e => console.log(e)} onManage={e => console.log(e)} />)
+        users.map(e => <UserCard key={e.id} user={e} onDelete={e => setUserDeleted(e.id)} onEdit={e => console.log(e)} onManage={e => console.log(e)} />)
       )}
 
+      <DeleteUser
+        onSuccess={userId => setUsers(users => users.filter(e => e.id != userId))}
+        open={!!userDeleted}
+        userId={userDeleted}
+        onOpenChange={() => setUserDeleted(undefined)}
+      />
       <Separator className="my-2" />
 
       <div className="w-full flex justify-center">

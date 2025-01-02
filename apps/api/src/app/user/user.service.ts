@@ -15,6 +15,10 @@ export class UserService {
     return this.prisma.exclude<User, 'password'>(user, ['password'])
   }
 
+  async removeById(id: string) {
+    return this.prisma.user.delete({ where: { id } })
+  }
+
   async create(data: CreateUserDto) {
     const user = await this.prisma.user.create({
       data
