@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { deleteUserAction } from '~/api/actions/delete-user.action'
 
 import { Button } from '~/components/ui/button'
-import { DialogFooter, DialogHeader, Dialog, DialogContent, DialogDescription, DialogTitle } from '~/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 
 type Props = {
   open: boolean

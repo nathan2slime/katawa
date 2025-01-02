@@ -14,11 +14,10 @@ import { Pagination as PaginationResult, SortOrder } from '~/types/pagination'
 
 import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { DeleteUser } from '~/components/delete-user'
 import { NewUser } from '~/components/new-user'
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert'
 import { debounce } from '~/lib/debounce'
-import { createPortal } from 'react-dom'
-import { DeleteUser } from '~/components/delete-user'
 
 type Props = {
   query: string
@@ -77,11 +76,7 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
           <Button variant="outline" onClick={() => onSearch({ sortOrder: sortOrder === SortOrder.ASC ? SortOrder.DESC : SortOrder.ASC })}>
             {sortOrder === SortOrder.ASC ? '↑' : '↓'}
           </Button>
-          <Select
-            onValueChange={value => {
-              onSearch({ perPage: value })
-            }}
-          >
+          <Select onValueChange={value => onSearch({ perPage: value })}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder={perPage.toString()} />
             </SelectTrigger>
@@ -111,7 +106,7 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
       )}
 
       <DeleteUser
-        onSuccess={userId => setUsers(users => users.filter(e => e.id != userId))}
+        onSuccess={userId => setUsers(users => users.filter(e => e.id !== userId))}
         open={!!userDeleted}
         userId={userDeleted}
         onOpenChange={() => setUserDeleted(undefined)}
