@@ -3,7 +3,7 @@ model Session {
   refreshToken String?
   accessToken  String?
 
-  user   User?   @relation(fields: [userId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String?
 
   createdAt DateTime  @default(now())
