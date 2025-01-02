@@ -29,8 +29,6 @@ export function NavUser({
 
   const name = `${user.firstName} ${user.lastName}`
 
- 
-
   const onSignout = async () => {
     await signoutMutation()
 

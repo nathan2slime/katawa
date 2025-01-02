@@ -15,11 +15,11 @@ export const AuthGuard = async ({ children }: AppChildren) => {
   const pathname = header.get('x-pathname') as string
   const referer = header.get('referer') as string
   const client = new QueryClient()
-  
+
   const path = pathname || new URL(referer).pathname
 
   const inAuthPage = path && path.includes('auth')
-  
+
   let session: SessionWithUser | null = null
 
   session = await client.fetchQuery({
@@ -32,7 +32,6 @@ export const AuthGuard = async ({ children }: AppChildren) => {
       queryKey: ['refresh-session'],
       queryFn: refreshSessionMutation
     })
-
 
   if (!inAuthPage && !session) redirect('/auth/signing')
 

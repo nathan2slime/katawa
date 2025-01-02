@@ -13,10 +13,10 @@ import { Separator } from '~/components/ui/separator'
 import { Pagination as PaginationResult, SortOrder } from '~/types/pagination'
 
 import { Search } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { NewUser } from '~/components/new-user'
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert'
 import { debounce } from '~/lib/debounce'
-import { NewUser } from '~/components/new-user'
-import { useEffect, useState } from 'react'
 
 type Props = {
   query: string
