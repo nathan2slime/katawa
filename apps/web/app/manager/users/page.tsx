@@ -48,6 +48,8 @@ const Users: Page = async ({ searchParams }) => {
       })
   })
 
+  if (!data) throw new Error('Unauthorized')
+
   return (
     <SidebarProvider>
       <AppSidebar />

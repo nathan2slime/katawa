@@ -2,7 +2,7 @@ import { Prisma, User } from '@kwa/database'
 import { Injectable } from '@nestjs/common'
 
 import { PaginationDto } from '~/app/app.dto'
-import { CreateUserDto } from '~/app/user/user.dto'
+import { CreateUserDto, UpdateUserDto } from '~/app/user/user.dto'
 import { PrismaService } from '~/database/prisma/prisma.service'
 
 @Injectable()
@@ -38,6 +38,10 @@ export class UserService {
         password: true
       }
     })
+  }
+
+  async updateById(id: string, data: UpdateUserDto) {
+    return this.prisma.user.update({ where: { id }, data })
   }
 
   async paginate({ perPage, query, page, sortField, sortOrder }: PaginationDto) {

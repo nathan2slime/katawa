@@ -28,10 +28,7 @@ services:
       - 6379:6379
     env_file:
       - ./.env.production
-    command: [
-      "redis-server",
-      "--requirepass", "${REDIS_PASSWORD}"
-    ]
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
     volumes:
       - redis_data:/var/lib/redis/data
   postgres:

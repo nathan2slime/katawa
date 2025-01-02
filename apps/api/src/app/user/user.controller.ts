@@ -1,15 +1,16 @@
 import { Permission } from '@kwa/database'
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Query, Res, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Query, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { hash } from 'bcryptjs'
 import { Response } from 'express'
 
 import { PaginationDto } from '~/app/app.dto'
+import { AppRequest } from '~/app/app.types'
 import { Roles } from '~/app/auth/auth.decorator'
 import { JwtAuthGuard } from '~/app/guards/auth.guard'
 import { RoleGuard } from '~/app/guards/role.guard'
 import { SessionService } from '~/app/session/session.service'
-import { CreateUserDto } from '~/app/user/user.dto'
+import { CreateUserDto, UpdateUserDto } from '~/app/user/user.dto'
 import { UserService } from '~/app/user/user.service'
 
 import { EMAIL_ALREADY_EXISTS_MESSAGE } from '~/errors'
@@ -26,6 +27,20 @@ export class UserController {
   @Get('paginate')
   async paginate(@Query() query: PaginationDto, @Res() res: Response) {
     const data = await this.userService.paginate(query)
+
+    return res.status(HttpStatus.OK).json(data)
+  }
+
+  @Put('update/:id')
+  async update(@Param('id') id: string, @Body() body: UpdateUserDto, @Req() req: AppRequest, @Res() res: Response) {
+    const isMe = id === 'me'
+
+    const session = req.user
+    const user = session.user
+
+    if (!isMe && !user.owner) throw new UnauthorizedException()
+
+    const data = await this.userService.updateById(isMe ? user.id : id, body)
 
     return res.status(HttpStatus.OK).json(data)
   }
