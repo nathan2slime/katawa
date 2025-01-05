@@ -1,21 +1,20 @@
 'use client'
 
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react'
-import { format } from 'date-fns'
 import { Permission, Role } from '@kwa/database'
+import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import { format } from 'date-fns'
+import { ArrowUpDown, MoreHorizontal } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
+import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { Checkbox } from '~/components/ui/checkbox'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '~/components/ui/dropdown-menu'
 import { Input } from '~/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table'
-import { Badge } from '~/components/ui/badge'
-import { Pagination } from '~/types/pagination'
 import { debounce } from '~/lib/debounce'
-import { cn } from '~/lib/utils'
+import { Pagination } from '~/types/pagination'
 
 export const columns: ColumnDef<Role>[] = [
   {
@@ -95,8 +94,8 @@ type Props = {
 }
 
 export const ListRoles = ({ query, roles: { data, sortField, sortOrder, page, pages, perPage } }: Props) => {
-  const [roleDeleted, setRoleDeleted] = useState<string>()
-  const [roleUpdated, setRoleUpdated] = useState<Role>()
+  const [_roleDeleted, _setRoleDeleted] = useState<string>()
+  const [_roleUpdated, _setRoleUpdated] = useState<Role>()
 
   const router = useRouter()
   const table = useReactTable({
