@@ -1,36 +1,40 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { User } from '@kwa/database'
+import { Role } from '@kwa/database'
 
 import { Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { HexColorPicker } from 'react-colorful'
 import { useForm } from 'react-hook-form'
-import { newUserAction } from '~/api/actions/new-user.action'
+
+import { newRoleService } from '~/api/mutations/new-role.mutation'
+import { SelectTagInput } from '~/components/select-tag-input'
 import { Button } from '~/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '~/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Input } from '~/components/ui/input'
-import { NewUserFormValues, newUserSchema } from '~/lib/schemas/new-user.schema'
+import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover'
+import { NewRoleFormValues, newRoleSchema } from '~/lib/schemas/new-role.schema'
 
 type Props = {
-  onCreate: (data: User) => void
+  onCreate: (data: Role) => void
+  permissions: string[]
 }
-export const NewUser = ({ onCreate }: Props) => {
+export const NewRole = ({ onCreate, permissions }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const form = useForm<NewUserFormValues>({
-    resolver: zodResolver(newUserSchema),
+  const form = useForm<NewRoleFormValues>({
+    resolver: zodResolver(newRoleSchema),
     defaultValues: {
-      email: '',
-      firstName: '',
-      lastName: '',
-      password: ''
+      color: '',
+      permissions: [],
+      name: ''
     }
   })
 
-  const onSubmit = async (payload: NewUserFormValues) => {
-    const res = await newUserAction(payload)
+  const onSubmit = async (payload: NewRoleFormValues) => {
+    const res = await newRoleService(payload)
 
     if (res) {
       setIsOpen(false)
@@ -39,7 +43,7 @@ export const NewUser = ({ onCreate }: Props) => {
   }
 
   useEffect(() => {
-    form.reset({ email: '', firstName: '', lastName: '', password: '' })
+    form.reset({ color: '', permissions: [], name: '' })
   }, [isOpen])
 
   const { isValid } = form.formState
@@ -53,62 +57,55 @@ export const NewUser = ({ onCreate }: Props) => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>New User</DialogTitle>
+          <DialogTitle>New Role</DialogTitle>
           <DialogDescription>Click save when you're done</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="flex gap-2 items-center">
-              <FormField
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>First Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="John" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Last Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Viktor" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
             <FormField
               control={form.control}
-              name="email"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="seu@email.com" {...field} />
+                    <Input placeholder="Manager" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
-              name="password"
+              name="permissions"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Senha</FormLabel>
+                  <FormLabel>Permissions</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="******" {...field} />
+                    <SelectTagInput {...field} value={field.value} options={permissions.map(e => ({ label: e, value: e }))} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="color"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Color</FormLabel>
+                  <FormControl>
+                    <Popover>
+                      <PopoverTrigger className="w-full">
+                        <Input {...field} placeholder="#F4F4F4" />
+                      </PopoverTrigger>
+                      <PopoverContent className="p-0 w-fit border-0 overflow-hidden">
+                        <HexColorPicker color={field.value} onChange={e => form.setValue('color', e, { shouldValidate: true })} />
+                      </PopoverContent>
+                    </Popover>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

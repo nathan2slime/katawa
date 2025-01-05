@@ -8,6 +8,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbS
 import { ScrollArea } from '~/components/ui/scroll-area'
 import { SidebarInset, SidebarProvider } from '~/components/ui/sidebar'
 
+import { getPermissionsAction } from '~/api/actions/get-permissions.action'
 import { getRolesAction } from '~/api/actions/get-roles.action'
 import { Page } from '~/types'
 import { PaginationArgs, SortOrder } from '~/types/pagination'
@@ -62,7 +63,7 @@ const MyRoles: Page = async ({ searchParams }) => {
         </Header>
         <ScrollArea>
           <div className="flex group-has-[[data-collapsible=icon]]/sidebar-wrapper:pt-12 px-4 pt-16 flex-1 w-full h-screen flex-col gap-4">
-            <ListRoles query={args.query || ''} roles={roles} />
+            <ListRoles permissions={await getPermissionsAction()} query={args.query || ''} roles={roles} />
           </div>
         </ScrollArea>
       </SidebarInset>

@@ -30,7 +30,11 @@
         "noUnusedVariables": "error"
       },
       "suspicious": {
+        "noConsoleLog": "error",
         "noArrayIndexKey": "off"
+      },
+      "a11y": {
+        "useKeyWithClickEvents": "off"
       },
       "complexity": {
         "useOptionalChain": "off"

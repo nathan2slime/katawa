@@ -1,17 +1,19 @@
 'use client'
 
 import { Permission, Role } from '@kwa/database'
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import { ColumnDef, flexRender, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { NewRole } from '~/components/new-role'
 
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { Checkbox } from '~/components/ui/checkbox'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '~/components/ui/dropdown-menu'
 import { Input } from '~/components/ui/input'
+import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table'
 import { debounce } from '~/lib/debounce'
 import { Pagination } from '~/types/pagination'
@@ -41,13 +43,34 @@ export const columns: ColumnDef<Role>[] = [
     header: 'Permissions',
     cell: ({ row }) => {
       const permissions: Permission[] = row.getValue('permissions') || []
+
+      const isSized = permissions.length > 3
+      const splited = permissions.slice(0, 3)
+
       return (
         <div className="gap-1 flex">
-          {permissions.map((permission, index) => (
+          {splited.map((permission, index) => (
             <Badge key={row.original.id + index} className="text-foreground" variant="outline">
               {permission}
             </Badge>
           ))}
+          {isSized && (
+            <Popover>
+              <PopoverTrigger asChild>
+                <Badge className="text-foreground cursor-pointer" variant="secondary">
+                  More
+                </Badge>
+              </PopoverTrigger>
+
+              <PopoverContent className="flex gap-1 flex-wrap">
+                {permissions.map((permission, index) => (
+                  <Badge key={row.original.id + index} className="text-foreground" variant="outline">
+                    {permission}
+                  </Badge>
+                ))}
+              </PopoverContent>
+            </Popover>
+          )}
         </div>
       )
     }
@@ -62,6 +85,7 @@ export const columns: ColumnDef<Role>[] = [
         </Button>
       )
     },
+    enableSorting: true,
     cell: ({ row }) => <div className="lowercase">{format(row.getValue('createdAt'), 'dd/MM/yyyy')}</div>
   },
   {
@@ -91,19 +115,22 @@ export const columns: ColumnDef<Role>[] = [
 type Props = {
   roles: Pagination<Role>
   query: string
+  permissions: string[]
 }
 
-export const ListRoles = ({ query, roles: { data, sortField, sortOrder, page, pages, perPage } }: Props) => {
+export const ListRoles = ({ query, roles: { data, sortField, sortOrder, page, pages, perPage }, permissions }: Props) => {
   const [_roleDeleted, _setRoleDeleted] = useState<string>()
   const [_roleUpdated, _setRoleUpdated] = useState<Role>()
+  const [roles, setRoles] = useState<Role[]>(data)
 
   const router = useRouter()
   const table = useReactTable({
-    data,
+    data: roles,
     getCoreRowModel: getCoreRowModel(),
-    columns
+    columns,
+    enableSorting: true,
+    getSortedRowModel: getSortedRowModel()
   })
-
   const onSearch = (args: Record<string, unknown>) => {
     const data: Record<string, string> = { page: page.toString(), query, perPage: perPage.toString(), sortField, pages: pages.toString(), sortOrder, ...args }
 
@@ -112,14 +139,20 @@ export const ListRoles = ({ query, roles: { data, sortField, sortOrder, page, pa
     router.push(`?${searchParams}`)
   }
 
+  useEffect(() => {
+    setRoles(data)
+  }, [data])
+
   const handleChange = debounce((query: string) => onSearch({ query, page: 1 }), 300)
 
   const rows = table.getRowModel().rows
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 justify-between">
         <Input placeholder="Filter roles..." onChange={event => handleChange(event.target.value)} className="max-w-sm" />
+
+        <NewRole permissions={permissions} onCreate={role => setRoles(prev => [...prev, role])} />
       </div>
       <div className="rounded-md border">
         <Table>
