@@ -46,12 +46,12 @@ export const UserCard = ({ user, onEdit, onDelete, onManage, loading }: Props) =
             <Separator className="mb-3" />
 
             <p className="text-sm text-foreground">{user.email}</p>
-            <p className="text-sm text-card-foreground mt-1">Criado em: {format(user.createdAt, 'dd/MM/yyyy')}</p>
+            <p className="text-sm text-card-foreground mt-1">Created at: {format(user.createdAt, 'dd/MM/yyyy')}</p>
           </div>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
+              <Button variant="ghost" className="h-8 flex-shrink-0 w-8 p-0">
                 <span className="sr-only">Open</span>
                 <MoreVertical className="h-4 w-4" />
               </Button>
@@ -59,15 +59,15 @@ export const UserCard = ({ user, onEdit, onDelete, onManage, loading }: Props) =
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => onEdit(user)}>
                 <Edit className="mr-2 h-4 w-4" />
-                <span>Editar</span>
+                <span>Edit</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onDelete(user)}>
                 <Trash className="mr-2 h-4 w-4" />
-                <span>Excluir</span>
+                <span>Delete</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onManage(user)}>
                 <Settings className="mr-2 h-4 w-4" />
-                <span>Gerenciar</span>
+                <span>Manage</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

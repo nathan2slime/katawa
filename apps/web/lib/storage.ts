@@ -5,8 +5,6 @@ export const setStorage = <T = object>(key: string, value: T): boolean => {
 
     return true
   } catch (_error) {
-    console.log(_error)
-
     return false
   }
 }
@@ -17,8 +15,6 @@ export const getStorage = <T = object>(key: string): T | null => {
   try {
     return JSON.parse(localStorage.getItem(key) || '') as T
   } catch (_error) {
-    console.log(_error)
-
     return null
   }
 }

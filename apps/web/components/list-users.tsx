@@ -96,7 +96,7 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
           </AlertDescription>
         </Alert>
       ) : (
-        users.map(e => <UserCard key={e.id} user={e} onDelete={e => setUserDeleted(e.id)} onEdit={e => setUserUpdated(e)} onManage={e => console.log(e)} />)
+        users.map(e => <UserCard key={e.id} user={e} onDelete={e => setUserDeleted(e.id)} onEdit={e => setUserUpdated(e)} onManage={() => {}} />)
       )}
 
       <EditUser
