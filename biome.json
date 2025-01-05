@@ -29,6 +29,9 @@
         "useExhaustiveDependencies": "off",
         "noUnusedVariables": "error"
       },
+      "suspicious": {
+        "noArrayIndexKey": "off"
+      },
       "complexity": {
         "useOptionalChain": "off"
       },

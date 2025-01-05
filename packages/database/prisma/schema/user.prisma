@@ -28,6 +28,8 @@ model Role {
     color      String
     permissions Permission[]
     userRole   UserRole[]
+
+    createdAt DateTime @default(now())
 }
 
 enum Permission {
