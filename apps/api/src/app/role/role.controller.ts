@@ -1,6 +1,7 @@
-import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, HttpStatus, Post, Query, Req, Res, UseGuards } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
+import { PaginationDto } from '~/app/app.dto'
 
 import { AppRequest } from '~/app/app.types'
 import { JwtAuthGuard } from '~/app/guards/auth.guard'
@@ -19,6 +20,14 @@ export class RoleController {
     const roles = await this.roleService.getByUser(req.user.userId)
 
     return res.status(HttpStatus.OK).json(roles)
+  }
+
+  @Get('paginate')
+  @UseGuards(OwnerGuard)
+  async paginate(@Query() query: PaginationDto, @Res() res: Response) {
+    const roles = await this.roleService.paginate(query)
+
+    return res.status(HttpStatus.CREATED).json(roles)
   }
 
   @Post('create')

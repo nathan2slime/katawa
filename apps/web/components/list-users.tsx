@@ -3,7 +3,7 @@
 import { User } from '@kwa/database'
 import { useRouter } from 'next/navigation'
 
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '~/components/ui/pagination'
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '~/components/ui/pagination'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { UserCard } from '~/components/user-card'
 
@@ -19,6 +19,7 @@ import { EditUser } from '~/components/edit-user'
 import { NewUser } from '~/components/new-user'
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert'
 import { debounce } from '~/lib/debounce'
+import { cn } from '~/lib/utils'
 
 type Props = {
   query: string
@@ -31,20 +32,6 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
   const [userUpdated, setUserUpdated] = useState<User>()
 
   const router = useRouter()
-
-  const buildPages = () => {
-    const links = []
-
-    for (let i = 1; i <= pages; i++) {
-      links.push(
-        <PaginationItem onClick={() => onSearch({ page: i, perPage, sortOrder, sortField, pages })} key={i}>
-          <PaginationLink isActive={i === page}>{i}</PaginationLink>
-        </PaginationItem>
-      )
-    }
-
-    return links
-  }
 
   const onSearch = (args: Record<string, unknown>) => {
     const data: Record<string, string> = { page: page.toString(), query, perPage: perPage.toString(), sortField, pages: pages.toString(), sortOrder, ...args }
@@ -59,6 +46,11 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
   useEffect(() => {
     setUsers(data)
   }, [data])
+
+  const totalPages = Array.from({ length: pages }, (_, i) => i + 1)
+
+  const prevPage = page - 1 < 0 ? null : page - 1
+  const nextPage = page + 1 >= pages ? null : page + 1
 
   return (
     <div className="flex flex-wrap gap-3 py-4 justify-center">
@@ -96,7 +88,7 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
       <Separator className="my-2" />
 
       {users.length === 0 ? (
-        <Alert>
+        <Alert className="mx-4">
           <Search className="h-4 w-4" />
           <AlertTitle>Heads up!</AlertTitle>
           <AlertDescription className="italic">
@@ -123,15 +115,55 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
 
       <Separator className="my-2" />
 
-      <div className="w-full flex justify-center">
-        <Pagination>
+      <div className="flex w-full justify-center">
+        <Pagination className="mt-4">
           <PaginationContent>
-            <PaginationItem onClick={() => onSearch({ page: (page > 1 ? page - 1 : 1).toString() })}>
-              <PaginationPrevious />
+            <PaginationItem
+              onClick={() => onSearch({ page: (page > 1 ? page - 1 : 1).toString() })}
+              className={cn(prevPage ? 'pointer-events-auto' : 'pointer-events-none opacity-50')}
+            >
+              <PaginationPrevious href="#" />
             </PaginationItem>
-            {buildPages()}
-            <PaginationItem onClick={() => onSearch({ page: (page >= pages ? pages : page + 1).toString() })}>
-              <PaginationNext />
+            {totalPages.map((e, index) => {
+              if (index < 2 || index >= totalPages.length - 2 || (index >= page - 1 && index <= page + 1)) {
+                return (
+                  <PaginationItem
+                    key={`${index}_user`}
+                    className={cn(users.length > 0 ? 'pointer-events-auto' : 'pointer-events-none opacity-50')}
+                    onClick={() =>
+                      onSearch({
+                        page: e,
+                        perPage,
+                        sortOrder,
+                        sortField,
+                        pages: totalPages
+                      })
+                    }
+                  >
+                    <PaginationLink isActive={e === page} href="#">
+                      {e}
+                    </PaginationLink>
+                  </PaginationItem>
+                )
+              }
+
+              if (index === 2 || index === totalPages.length - 3) {
+                return (
+                  <PaginationItem>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                )
+              }
+            })}
+            <PaginationItem
+              className={cn(nextPage ? 'pointer-events-auto' : 'pointer-events-none opacity-50')}
+              onClick={() =>
+                onSearch({
+                  page: (page >= pages ? pages : page + 1).toString()
+                })
+              }
+            >
+              <PaginationNext href="#" />
             </PaginationItem>
           </PaginationContent>
         </Pagination>
