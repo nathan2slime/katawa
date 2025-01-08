@@ -13,13 +13,13 @@ import { SortOrder } from '~/types/pagination'
 
 import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { UserWithRole, UsersResponse } from '~/api/queries/get-users.query'
 import { DeleteUser } from '~/components/delete-user'
 import { EditUser } from '~/components/edit-user'
 import { NewUser } from '~/components/new-user'
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert'
 import { debounce } from '~/lib/debounce'
 import { cn } from '~/lib/utils'
-import {  UsersResponse, UserWithRole } from '~/api/queries/get-users.query'
 
 type Props = {
   query: string
