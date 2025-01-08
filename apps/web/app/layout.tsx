@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Titillium_Web } from 'next/font/google'
+import { Comic_Neue } from 'next/font/google'
 import { cn } from '~/lib/utils'
 import type { AppChildren } from '~/types'
 
@@ -10,9 +10,9 @@ import '~/app/globals.css'
 
 export const metadata: Metadata = {}
 
-const baloo = Titillium_Web({
+const baloo = Comic_Neue({
   subsets: ['latin'],
-  weight: ['400', '300', '600', '700', '900']
+  weight: ['400', '300', '700']
 })
 
 const RootLayout = ({ children }: Readonly<AppChildren>) => (

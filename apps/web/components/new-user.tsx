@@ -1,12 +1,12 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { User } from '@kwa/database'
 
 import { Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { newUserAction } from '~/api/actions/new-user.action'
+import { UserWithRole } from '~/api/queries/get-users.query'
 import { Button } from '~/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '~/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
@@ -14,12 +14,13 @@ import { Input } from '~/components/ui/input'
 import { NewUserFormValues, newUserSchema } from '~/lib/schemas/new-user.schema'
 
 type Props = {
-  onCreate: (data: User) => void
+  onCreate: (data: UserWithRole) => void
 }
 export const NewUser = ({ onCreate }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const form = useForm<NewUserFormValues>({
+    mode: 'all',
     resolver: zodResolver(newUserSchema),
     defaultValues: {
       email: '',
@@ -34,7 +35,7 @@ export const NewUser = ({ onCreate }: Props) => {
 
     if (res) {
       setIsOpen(false)
-      onCreate(res)
+      onCreate({ ...res, roles: [] })
     }
   }
 
@@ -59,7 +60,7 @@ export const NewUser = ({ onCreate }: Props) => {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-start">
               <FormField
                 control={form.control}
                 name="firstName"

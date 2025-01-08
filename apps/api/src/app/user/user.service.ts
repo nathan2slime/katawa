@@ -41,7 +41,23 @@ export class UserService {
   }
 
   async updateById(id: string, data: UpdateUserDto) {
-    return this.prisma.user.update({ where: { id }, data })
+    return this.prisma.user.update({
+      where: { id },
+      data,
+      select: {
+        roles: {
+          select: {
+            role: {
+              select: {
+                color: true,
+                name: true,
+                id: true
+              }
+            }
+          }
+        }
+      }
+    })
   }
 
   async paginate({ perPage, query, page, sortField, sortOrder }: PaginationDto) {
@@ -78,6 +94,19 @@ export class UserService {
       take: perPage,
       skip: page === 1 ? 0 : perPage * (page - 1),
       where,
+      include: {
+        roles: {
+          select: {
+            role: {
+              select: {
+                color: true,
+                name: true,
+                id: true
+              }
+            }
+          }
+        }
+      },
       orderBy: sortField
         ? [{ [sortField]: sortOrder }]
         : {
