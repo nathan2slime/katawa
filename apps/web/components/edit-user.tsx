@@ -23,6 +23,7 @@ type Props = {
 export const EditUser = ({ onCreate, data, isOpen, onOpenChange }: Props) => {
   const form = useForm<EditUserFormValues>({
     resolver: zodResolver(editUserSchema),
+    mode: 'all',
     defaultValues: {
       email: data?.email,
       id: data?.id,

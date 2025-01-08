@@ -2,7 +2,7 @@ import { Prisma } from '@kwa/database'
 import { Injectable } from '@nestjs/common'
 
 import { PaginationDto } from '~/app/app.dto'
-import { CreateRoleDto } from '~/app/role/role.dto'
+import { CreateRoleDto, UpdateRoleDto } from '~/app/role/role.dto'
 import { PrismaService } from '~/database/prisma/prisma.service'
 
 @Injectable()
@@ -19,6 +19,14 @@ export class RoleService {
         }
       }
     })
+  }
+
+  async delete(id: string) {
+    return this.prisma.role.delete({ where: { id } })
+  }
+
+  async update(id: string, data: UpdateRoleDto) {
+    return this.prisma.role.update({ where: { id }, data })
   }
 
   async paginate({ query, perPage, page, sortField, sortOrder }: PaginationDto) {

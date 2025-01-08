@@ -6,6 +6,10 @@ import { format } from 'date-fns'
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { proxy, useSnapshot } from 'valtio'
+import { DeleteRole } from '~/components/delete-role'
+
+import { EditRole } from '~/components/edit-role'
 import { NewRole } from '~/components/new-role'
 
 import { Badge } from '~/components/ui/badge'
@@ -17,6 +21,22 @@ import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table'
 import { debounce } from '~/lib/debounce'
 import { Pagination } from '~/types/pagination'
+
+type Props = {
+  roles: Pagination<Role>
+  query: string
+  permissions: string[]
+}
+
+type RoleState = {
+  updatedRole: Role | undefined
+  deletedRoleIds: string[] | undefined
+}
+
+const proxyRoleState = proxy<RoleState>({
+  updatedRole: undefined,
+  deletedRoleIds: undefined
+})
 
 export const columns: ColumnDef<Role>[] = [
   {
@@ -63,11 +83,13 @@ export const columns: ColumnDef<Role>[] = [
               </PopoverTrigger>
 
               <PopoverContent className="flex gap-1 flex-wrap">
-                {permissions.map((permission, index) => (
-                  <Badge key={row.original.id + index} className="text-foreground" variant="outline">
-                    {permission}
-                  </Badge>
-                ))}
+                {permissions
+                  .filter(e => !splited.includes(e))
+                  .map((permission, index) => (
+                    <Badge key={row.original.id + index} className="text-foreground" variant="outline">
+                      {permission}
+                    </Badge>
+                  ))}
               </PopoverContent>
             </Popover>
           )}
@@ -91,7 +113,7 @@ export const columns: ColumnDef<Role>[] = [
   {
     id: 'actions',
     enableHiding: false,
-    cell: () => {
+    cell: ({ row: { original }, table }) => {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -103,8 +125,26 @@ export const columns: ColumnDef<Role>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Gerenciar</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Editar</DropdownMenuItem>
-            <DropdownMenuItem>Remover</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                proxyRoleState.updatedRole = original
+              }}
+            >
+              Editar
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                const selected = table.getSelectedRowModel().flatRows
+
+                if (selected.length > 0) {
+                  proxyRoleState.deletedRoleIds = selected.map(row => row.original.id)
+                } else {
+                  proxyRoleState.deletedRoleIds = [original.id]
+                }
+              }}
+            >
+              Remover
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
@@ -112,15 +152,9 @@ export const columns: ColumnDef<Role>[] = [
   }
 ]
 
-type Props = {
-  roles: Pagination<Role>
-  query: string
-  permissions: string[]
-}
-
 export const ListRoles = ({ query, roles: { data, sortField, sortOrder, page, pages, perPage }, permissions }: Props) => {
-  const [_roleDeleted, _setRoleDeleted] = useState<string>()
-  const [_roleUpdated, _setRoleUpdated] = useState<Role>()
+  const { updatedRole, deletedRoleIds } = useSnapshot(proxyRoleState)
+
   const [roles, setRoles] = useState<Role[]>(data)
 
   const router = useRouter()
@@ -131,6 +165,7 @@ export const ListRoles = ({ query, roles: { data, sortField, sortOrder, page, pa
     enableSorting: true,
     getSortedRowModel: getSortedRowModel()
   })
+
   const onSearch = (args: Record<string, unknown>) => {
     const data: Record<string, string> = { page: page.toString(), query, perPage: perPage.toString(), sortField, pages: pages.toString(), sortOrder, ...args }
 
@@ -154,6 +189,33 @@ export const ListRoles = ({ query, roles: { data, sortField, sortOrder, page, pa
 
         <NewRole permissions={permissions} onCreate={role => setRoles(prev => [...prev, role])} />
       </div>
+
+      {updatedRole && (
+        <EditRole
+          onOpenChange={() => {
+            proxyRoleState.updatedRole = undefined
+          }}
+          open={!!updatedRole}
+          data={updatedRole as Role}
+          onUpdated={role => setRoles(roles => roles.map(e => (e.id === role.id ? role : e)))}
+          permissions={permissions}
+        />
+      )}
+
+      {deletedRoleIds && deletedRoleIds.length > 0 && (
+        <DeleteRole
+          roles={deletedRoleIds}
+          onOpenChange={() => {
+            proxyRoleState.deletedRoleIds = undefined
+          }}
+          open={!!deletedRoleIds}
+          onSuccess={deletedRoles => {
+            table.resetRowSelection()
+            setRoles(roles => roles.filter(role => !deletedRoles.includes(role.id)))
+          }}
+        />
+      )}
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -184,6 +246,7 @@ export const ListRoles = ({ query, roles: { data, sortField, sortOrder, page, pa
           </TableBody>
         </Table>
       </div>
+
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.

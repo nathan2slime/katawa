@@ -34,7 +34,7 @@ const main = async () => {
     })
   )
 
-  app.useGlobalFilters(new HttpExceptionFilter(), new AllExceptionsFilter(httpAdapter, logger))
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter, logger), new HttpExceptionFilter())
 
   const config = new DocumentBuilder().setTitle('Kwa').build()
 
