@@ -1,16 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Role } from '@kwa/database'
-import { useForm } from 'react-hook-form'
 import { HexColorPicker } from 'react-colorful'
+import { useForm } from 'react-hook-form'
 
+import { updateRoleService } from '~/api/mutations/edit-role.mutation'
+import { SelectTagInput } from '~/components/select-tag-input'
+import { Button } from '~/components/ui/button'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
-import { NewRoleFormValues, newRoleSchema } from '~/lib/schemas/new-role.schema'
 import { Input } from '~/components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover'
-import { SelectTagInput } from '~/components/select-tag-input'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '~/components/ui/dialog'
-import { Button } from '~/components/ui/button'
-import { updateRoleService } from '~/api/mutations/edit-role.mutation'
+import { NewRoleFormValues, newRoleSchema } from '~/lib/schemas/new-role.schema'
 
 type Props = {
   data: Readonly<Role>

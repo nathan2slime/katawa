@@ -1,6 +1,5 @@
 import { Role } from '@kwa/database'
 
-
 import { api } from '~/api/client'
 import { NewRoleFormValues } from '~/lib/schemas/new-role.schema'
 
