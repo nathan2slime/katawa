@@ -114,28 +114,30 @@ export const columns: ColumnDef<Role>[] = [
     id: 'actions',
     enableHiding: false,
     cell: ({ row: { original }, table }) => {
+      const selected = table.getSelectedRowModel().flatRows
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Abrir</span>
+              <span className="sr-only">Open</span>
               <MoreHorizontal />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Gerenciar</DropdownMenuLabel>
+            <DropdownMenuLabel>Manage</DropdownMenuLabel>
             <DropdownMenuSeparator />
+            {selected.length <= 0 && (
+              <DropdownMenuItem
+                onClick={() => {
+                  proxyRoleState.updatedRole = original
+                }}
+              >
+                Edit
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem
               onClick={() => {
-                proxyRoleState.updatedRole = original
-              }}
-            >
-              Editar
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                const selected = table.getSelectedRowModel().flatRows
-
                 if (selected.length > 0) {
                   proxyRoleState.deletedRoleIds = selected.map(row => row.original.id)
                 } else {
@@ -143,7 +145,7 @@ export const columns: ColumnDef<Role>[] = [
                 }
               }}
             >
-              Remover
+              Remove
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

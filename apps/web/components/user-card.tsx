@@ -1,6 +1,7 @@
-import { User } from '@kwa/database'
 import { format } from 'date-fns'
 import { Edit, MoreVertical, Settings, Trash } from 'lucide-react'
+import { UserWithRole } from '~/api/queries/get-users.query'
+import { Badge } from '~/components/ui/badge'
 
 import { Button } from '~/components/ui/button'
 import { Card, CardContent } from '~/components/ui/card'
@@ -8,10 +9,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Separator } from '~/components/ui/separator'
 
 type Props = {
-  user: User
-  onEdit: (user: User) => void
-  onDelete: (user: User) => void
-  onManage: (user: User) => void
+  user: UserWithRole
+  onEdit: (user: UserWithRole) => void
+  onDelete: (user: UserWithRole) => void
+  onManage: (user: UserWithRole) => void
   loading?: boolean
 }
 
@@ -46,7 +47,13 @@ export const UserCard = ({ user, onEdit, onDelete, onManage, loading }: Props) =
             <Separator className="mb-3" />
 
             <p className="text-sm text-foreground">{user.email}</p>
-            <p className="text-sm text-card-foreground mt-1">Created at: {format(user.createdAt, 'dd/MM/yyyy')}</p>
+            <p className="text-xs text-card-foreground mt-1">Created at: {format(user.createdAt, 'dd/MM/yyyy')}</p>
+
+            <div className="mt-1 flex gap-1">
+              {user.roles.map(({ role }) => (
+                <Badge className='text-foreground' style={{ background: `${role.color}80`}} key={role.id}>{role.name}</Badge>
+              ))}
+            </div>
           </div>
 
           <DropdownMenu>

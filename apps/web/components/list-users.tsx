@@ -1,6 +1,5 @@
 'use client'
 
-import { User } from '@kwa/database'
 import { useRouter } from 'next/navigation'
 
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '~/components/ui/pagination'
@@ -10,7 +9,7 @@ import { UserCard } from '~/components/user-card'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Separator } from '~/components/ui/separator'
-import { Pagination as PaginationResult, SortOrder } from '~/types/pagination'
+import { SortOrder } from '~/types/pagination'
 
 import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -20,16 +19,17 @@ import { NewUser } from '~/components/new-user'
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert'
 import { debounce } from '~/lib/debounce'
 import { cn } from '~/lib/utils'
+import {  UsersResponse, UserWithRole } from '~/api/queries/get-users.query'
 
 type Props = {
   query: string
-  users: PaginationResult<User>
+  users: UsersResponse
 }
 
 export const ListUsers = ({ query, users: { data, pages, page, perPage, sortField, sortOrder } }: Props) => {
   const [users, setUsers] = useState(data)
   const [userDeleted, setUserDeleted] = useState<string>()
-  const [userUpdated, setUserUpdated] = useState<User>()
+  const [userUpdated, setUserUpdated] = useState<UserWithRole>()
 
   const router = useRouter()
 

@@ -13,8 +13,6 @@ import { getRolesAction } from '~/api/actions/get-roles.action'
 import { Page } from '~/types'
 import { PaginationArgs, SortOrder } from '~/types/pagination'
 
-export const dynamic = 'force-dynamic'
-
 const schema = z.object({
   query: z.string().default(''),
   perPage: z.coerce.number().default(15),
@@ -22,6 +20,8 @@ const schema = z.object({
   sortField: z.string().default('createdAt'),
   page: z.coerce.number().default(1)
 })
+
+export const dynamic = 'force-dynamic'
 
 const MyRoles: Page = async ({ searchParams }) => {
   const params = schema.safeParse(await searchParams)

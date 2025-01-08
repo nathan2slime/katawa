@@ -1,11 +1,11 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { User } from '@kwa/database'
 import { useEffect } from 'react'
 
 import { useForm } from 'react-hook-form'
 import { editUserAction } from '~/api/actions/edit-user.action'
+import { UserWithRole } from '~/api/queries/get-users.query'
 
 import { Button } from '~/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '~/components/ui/dialog'
@@ -14,10 +14,10 @@ import { Input } from '~/components/ui/input'
 import { EditUserFormValues, editUserSchema } from '~/lib/schemas/edit-user.schema'
 
 type Props = {
-  data?: User
+  data?: UserWithRole
   isOpen: boolean
   onOpenChange: (value: boolean) => void
-  onCreate: (data: User) => void
+  onCreate: (data: UserWithRole) => void
 }
 
 export const EditUser = ({ onCreate, data, isOpen, onOpenChange }: Props) => {
