@@ -8,6 +8,7 @@ import { api } from '~/api/server'
 import { loginSchema } from '~/lib/schemas/login.schema'
 import { SessionWithUser } from '~/types/auth'
 
+// TODO: Just not making sense, it was a study of actions
 export const loginAction = async (prev: unknown, payload: FormData) => {
   const { data, headers } = await api.post<SessionWithUser>('/auth/signin', loginSchema.parse(Object.fromEntries(payload.entries())))
 

@@ -1,4 +1,3 @@
-import { log } from 'node:console'
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common'
 import { AbstractHttpAdapter } from '@nestjs/core'
 import { Request, Response } from 'express'
@@ -45,10 +44,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       path: httpAdapter.getRequestUrl(ctx.getRequest())
     }
-    this.logger.error(exception.message.toLowerCase(), {
+    this.logger.error(exception, {
       stack: exception.stack
     })
-    log(exception)
 
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus)
   }

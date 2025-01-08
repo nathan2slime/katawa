@@ -1,7 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalPassThroughEnv": ["*"],
-  "ui": "tui",
+  "ui": "stream",
   "tasks": {
     "build": {
       "cache": false,

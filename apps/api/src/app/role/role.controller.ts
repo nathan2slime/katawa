@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Query, Req, Res, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, Req, Res, UseGuards } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 import { PaginationDto } from '~/app/app.dto'
@@ -6,7 +6,7 @@ import { PaginationDto } from '~/app/app.dto'
 import { AppRequest } from '~/app/app.types'
 import { JwtAuthGuard } from '~/app/guards/auth.guard'
 import { OwnerGuard } from '~/app/guards/owner.guard'
-import { CreateRoleDto } from '~/app/role/role.dto'
+import { CreateRoleDto, UpdateRoleDto } from '~/app/role/role.dto'
 import { RoleService } from '~/app/role/role.service'
 
 @Controller('role')
@@ -36,5 +36,21 @@ export class RoleController {
     const role = await this.roleService.create(body)
 
     return res.status(HttpStatus.CREATED).json(role)
+  }
+
+  @Put('update/:id')
+  @UseGuards(OwnerGuard)
+  async update(@Param('id') id: string, @Body() payload: UpdateRoleDto, @Res() res: Response) {
+    const data = await this.roleService.update(id, payload)
+
+    return res.status(HttpStatus.OK).json(data)
+  }
+
+  @Delete('delete/:id')
+  @UseGuards(OwnerGuard)
+  async delete(@Param('id') id: string, @Res() res: Response) {
+    await this.roleService.delete(id)
+
+    return res.status(HttpStatus.OK).json({ id })
   }
 }

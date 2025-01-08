@@ -17,7 +17,7 @@ const baloo = Titillium_Web({
 
 const RootLayout = ({ children }: Readonly<AppChildren>) => (
   <html lang="en">
-    <body className={cn(baloo.className, 'overflow-hidden')}>
+    <body className={cn(baloo.className, 'overflow-hidden dark')}>
       <Providers>
         <AuthGuard>{children}</AuthGuard>
       </Providers>
