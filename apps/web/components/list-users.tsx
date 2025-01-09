@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react'
 import { UserWithRole, UsersResponse } from '~/api/queries/get-users.query'
 import { DeleteUser } from '~/components/delete-user'
 import { EditUser } from '~/components/edit-user'
+import { ManageUser } from '~/components/manage-user'
 import { NewUser } from '~/components/new-user'
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert'
 import { debounce } from '~/lib/debounce'
@@ -30,6 +31,7 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
   const [users, setUsers] = useState(data)
   const [userDeleted, setUserDeleted] = useState<string>()
   const [userUpdated, setUserUpdated] = useState<UserWithRole>()
+  const [userManaged, setUserManaged] = useState<UserWithRole>()
 
   const router = useRouter()
 
@@ -96,7 +98,7 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
           </AlertDescription>
         </Alert>
       ) : (
-        users.map(e => <UserCard key={e.id} user={e} onDelete={e => setUserDeleted(e.id)} onEdit={e => setUserUpdated(e)} onManage={() => {}} />)
+        users.map(e => <UserCard key={e.id} user={e} onDelete={e => setUserDeleted(e.id)} onEdit={e => setUserUpdated(e)} onManage={e => setUserManaged(e)} />)
       )}
 
       <EditUser
@@ -112,6 +114,15 @@ export const ListUsers = ({ query, users: { data, pages, page, perPage, sortFiel
         userId={userDeleted}
         onOpenChange={() => setUserDeleted(undefined)}
       />
+
+      {userManaged && (
+        <ManageUser
+          onComplete={user => setUsers(users => users.map(e => (e.id === user.id ? user : e)))}
+          open={!!userManaged}
+          onOpenChange={() => setUserManaged(undefined)}
+          user={userManaged}
+        />
+      )}
 
       <Separator className="my-2" />
 

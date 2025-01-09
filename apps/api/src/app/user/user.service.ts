@@ -40,24 +40,46 @@ export class UserService {
     })
   }
 
-  async updateById(id: string, data: UpdateUserDto) {
-    return this.prisma.user.update({
+  async removeRole(id: string, role: string) {
+    const user = await this.prisma.user.update({
       where: { id },
-      data,
-      select: {
+      data: {
         roles: {
-          select: {
-            role: {
-              select: {
-                color: true,
-                name: true,
-                id: true
-              }
-            }
+          disconnect: {
+            id: role
           }
         }
       }
     })
+
+    return this.prisma.exclude<typeof user, 'password'>(user, ['password'])
+  }
+
+  async addRole(id: string, role: string) {
+    const user = await this.prisma.user.update({
+      where: { id },
+      data: {
+        roles: {
+          connect: {
+            id: role
+          }
+        }
+      }
+    })
+
+    return this.prisma.exclude<typeof user, 'password'>(user, ['password'])
+  }
+
+  async updateById(id: string, data: UpdateUserDto) {
+    const user = await this.prisma.user.update({
+      where: { id },
+      data,
+      include: {
+        roles: true
+      }
+    })
+
+    return this.prisma.exclude<typeof user, 'password'>(user, ['password'])
   }
 
   async paginate({ perPage, query, page, sortField, sortOrder }: PaginationDto) {
@@ -95,17 +117,7 @@ export class UserService {
       skip: page === 1 ? 0 : perPage * (page - 1),
       where,
       include: {
-        roles: {
-          select: {
-            role: {
-              select: {
-                color: true,
-                name: true,
-                id: true
-              }
-            }
-          }
-        }
+        roles: true
       },
       orderBy: sortField
         ? [{ [sortField]: sortOrder }]

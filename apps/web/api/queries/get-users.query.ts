@@ -5,17 +5,7 @@ import { Pagination, PaginationArgs } from '~/types/pagination'
 
 export type UserWithRole = Prisma.UserGetPayload<{
   include: {
-    roles: {
-      select: {
-        role: {
-          select: {
-            color: true
-            name: true
-            id: true
-          }
-        }
-      }
-    }
+    roles: true
   }
 }>
 

@@ -31,6 +31,7 @@ export class UserController {
     return res.status(HttpStatus.OK).json(data)
   }
 
+  @Roles([Permission.UPDATE_USER])
   @Put('update/:id')
   async update(@Param('id') id: string, @Body() body: UpdateUserDto, @Req() req: AppRequest, @Res() res: Response) {
     const isMe = id === 'me'
@@ -45,6 +46,23 @@ export class UserController {
     return res.status(HttpStatus.OK).json(data)
   }
 
+  @Roles([Permission.UPDATE_USER])
+  @Delete('manage/remove/:id/:role')
+  async removeRole(@Param('id') id: string, @Param('role') role: string, @Res() res: Response) {
+    const data = await this.userService.removeRole(id, role)
+
+    return res.status(HttpStatus.OK).json(data)
+  }
+
+  @Roles([Permission.UPDATE_USER])
+  @Put('manage/add/:id/:role')
+  async addRole(@Param('id') id: string, @Param('role') role: string, @Res() res: Response) {
+    const data = await this.userService.addRole(id, role)
+
+    return res.status(HttpStatus.OK).json(data)
+  }
+
+  @Roles([Permission.DELETE_USER])
   @Delete('remove/:id')
   async remove(@Param('id') id: string, @Res() res: Response) {
     await this.userService.removeById(id)

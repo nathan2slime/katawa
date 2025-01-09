@@ -50,7 +50,7 @@ export const UserCard = ({ user, onEdit, onDelete, onManage, loading }: Props) =
             <p className="text-xs text-card-foreground mt-1">Created at: {format(user.createdAt, 'dd/MM/yyyy')}</p>
 
             <div className="mt-1 flex gap-1">
-              {user.roles.map(({ role }) => (
+              {user.roles.map(role => (
                 <Badge className="text-foreground" style={{ background: `${role.color}80` }} key={role.id}>
                   {role.name}
                 </Badge>
