@@ -84,6 +84,7 @@ export const EditUser = ({ onCreate, data, isOpen, onOpenChange }: Props) => {
                 )}
               />
             </div>
+
             <FormField
               control={form.control}
               name="email"

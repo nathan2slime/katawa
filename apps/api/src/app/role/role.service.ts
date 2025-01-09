@@ -12,9 +12,9 @@ export class RoleService {
   async getByUser(userId: string) {
     return this.prisma.role.findMany({
       where: {
-        userRole: {
+        users: {
           some: {
-            userId
+            id: userId
           }
         }
       }
