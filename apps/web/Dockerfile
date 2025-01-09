@@ -42,7 +42,8 @@ RUN pnpm install
 
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
-COPY --from=builder /app/.env.production .env
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 ENV TURBO_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 RUN pnpm build --filter=@kwa/web...
