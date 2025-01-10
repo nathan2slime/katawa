@@ -14,7 +14,7 @@
     "start": {},
     "db:seed": {},
     "dev": {
-      "persistent": true
+      "persistent": false
     },
     "db:generate": {
       "outputs": ["dist/**"]

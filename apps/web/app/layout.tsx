@@ -17,7 +17,7 @@ const baloo = Comic_Neue({
 
 const RootLayout = ({ children }: Readonly<AppChildren>) => (
   <html lang="en">
-    <body className={cn(baloo.className, 'overflow-hidden dark')}>
+    <body className={cn(baloo.className, 'overflow-hidden')}>
       <Providers>
         <AuthGuard>{children}</AuthGuard>
       </Providers>

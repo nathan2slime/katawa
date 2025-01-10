@@ -295,8 +295,6 @@ importers:
         specifier: ^12.1.0
         version: 12.1.0
 
-  packages/database/dist: {}
-
   packages/env:
     dependencies:
       '@t3-oss/env-core':
