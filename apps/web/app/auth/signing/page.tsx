@@ -27,6 +27,7 @@ const Login: Page = ({ searchParams }) => {
   const [state, action, pending] = useActionState(loginAction, null)
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
+    mode: 'all',
     defaultValues: {
       email: '',
       password: ''
@@ -57,6 +58,8 @@ const Login: Page = ({ searchParams }) => {
       }
     }
   }, [state])
+
+  const { isValid } = form.formState
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
@@ -95,7 +98,7 @@ const Login: Page = ({ searchParams }) => {
                 )}
               />
 
-              <Button type="submit" className="w-full uppercase font-medium">
+              <Button disabled={!isValid} type="submit" className="w-full uppercase font-medium">
                 {pending ? <Loading name="cardio" size="22" speed="2" /> : 'Entrar'}
               </Button>
             </form>
