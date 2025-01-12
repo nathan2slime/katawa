@@ -13,15 +13,6 @@ model User {
     roles    Role[]
 }
 
-// model UserRole {
-//     id String @id @default(cuid())
-
-//     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-//     role   Role   @relation(fields: [roleId], references: [id])
-//     userId String
-//     roleId String
-// }
-
 model Role {
     id         String       @id @default(cuid())
     name String @unique

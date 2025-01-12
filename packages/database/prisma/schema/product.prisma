@@ -25,6 +25,7 @@ model ProductVariant {
 
 model Category {
     id       String    @id @default(cuid())
-    slug     String
+    title    String
+    slug     String @unique
     products Product[]
 }
