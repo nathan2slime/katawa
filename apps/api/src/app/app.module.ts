@@ -4,12 +4,12 @@ import { ConfigModule } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
 
 import { AuthModule } from '~/app/auth/auth.module'
+import { CategoryModule } from '~/app/category/category.module'
+import { RoleModule } from '~/app/role/role.module'
+import configuration from '~/config'
 import { PrismaModule } from '~/database/prisma/prisma.module'
 import { RedisModule } from '~/database/redis/redis.module'
 import { LoggerModule } from '~/logger/logger.module'
-
-import { RoleModule } from '~/app/role/role.module'
-import configuration from '~/config'
 
 @Module({
   imports: [
@@ -17,6 +17,7 @@ import configuration from '~/config'
     AuthModule,
     RedisModule,
     PrismaModule,
+    CategoryModule,
     RoleModule,
     JwtModule.register({
       global: true,

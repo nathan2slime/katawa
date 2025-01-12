@@ -1,10 +1,12 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { CreateCategoryDto, UpdateCategoryDto } from '~/app/category/category.dto'
 import { CategoryService } from '~/app/category/category.service'
 
 @Controller('category')
+@ApiTags('Category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
