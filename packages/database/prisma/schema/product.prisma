@@ -2,7 +2,7 @@ model Product {
     id          String           @id @default(cuid())
     name        String
     description String?
-    category    String
+    categories  Category[]
     variants    ProductVariant[]
     createdAt   DateTime         @default(now())
     updatedAt   DateTime         @updatedAt
@@ -21,4 +21,10 @@ model ProductVariant {
     updatedAt  DateTime @updatedAt
 
     @@index([sku])
+}
+
+model Category {
+    id       String    @id @default(cuid())
+    slug     String
+    products Product[]
 }

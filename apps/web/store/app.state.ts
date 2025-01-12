@@ -8,7 +8,7 @@ export type AppState = {
 export const storageKey = '@kwa/web'
 
 const INITIAL: AppState = {
-  theme: 'light'
+  theme: 'dark'
 }
 
 export const appState = proxy(getStorage(storageKey) || INITIAL)
