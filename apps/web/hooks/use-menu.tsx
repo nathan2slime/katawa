@@ -39,6 +39,10 @@ const manager = {
       url: '/manager/users'
     },
     {
+      title: 'Categories',
+      url: '/manager/categories'
+    },
+    {
       title: 'Roles',
       url: '/manager/roles'
     }

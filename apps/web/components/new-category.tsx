@@ -1,41 +1,36 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Role } from '@kwa/database'
-
+import { Category } from '@kwa/database'
 import { Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { HexColorPicker } from 'react-colorful'
 import { useForm } from 'react-hook-form'
 
-import { newRoleService } from '~/api/mutations/new-role.mutation'
-import { SelectTagInput } from '~/components/select-tag-input'
+import { newCategoryService } from '~/api/mutations/new-category.mutation'
+
 import { Button } from '~/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '~/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Input } from '~/components/ui/input'
-import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover'
-import { NewRoleFormValues, newRoleSchema } from '~/lib/schemas/new-role.schema'
+import { NewCategoryFormValues, newCategorySchema } from '~/lib/schemas/new-category.schema'
 
 type Props = {
-  onCreate: (data: Role) => void
-  permissions: string[]
+  onCreate: (data: Category) => void
 }
 
-export const NewRole = ({ onCreate, permissions }: Props) => {
+export const NewCategory = ({ onCreate }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const form = useForm<NewRoleFormValues>({
-    resolver: zodResolver(newRoleSchema),
+  const form = useForm<NewCategoryFormValues>({
+    resolver: zodResolver(newCategorySchema),
     defaultValues: {
-      color: '',
-      permissions: [],
-      name: ''
+      slug: '',
+      title: ''
     }
   })
 
-  const onSubmit = async (payload: NewRoleFormValues) => {
-    const res = await newRoleService(payload)
+  const onSubmit = async (payload: NewCategoryFormValues) => {
+    const res = await newCategoryService(payload)
 
     if (res) {
       setIsOpen(false)
@@ -44,7 +39,7 @@ export const NewRole = ({ onCreate, permissions }: Props) => {
   }
 
   useEffect(() => {
-    form.reset({ color: '', permissions: [], name: '' })
+    form.reset({ title: '', slug: '' })
   }, [isOpen])
 
   const { isValid } = form.formState
@@ -58,7 +53,7 @@ export const NewRole = ({ onCreate, permissions }: Props) => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>New Role</DialogTitle>
+          <DialogTitle>New Category</DialogTitle>
           <DialogDescription>Click save when you're done</DialogDescription>
         </DialogHeader>
 
@@ -66,12 +61,12 @@ export const NewRole = ({ onCreate, permissions }: Props) => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="name"
+              name="title"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manager" {...field} />
+                    <Input placeholder="Computers" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -80,33 +75,12 @@ export const NewRole = ({ onCreate, permissions }: Props) => {
 
             <FormField
               control={form.control}
-              name="permissions"
+              name="slug"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Permissions</FormLabel>
+                  <FormLabel>Slug</FormLabel>
                   <FormControl>
-                    <SelectTagInput {...field} value={field.value} options={permissions.map(e => ({ label: e, value: e }))} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="color"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Color</FormLabel>
-                  <FormControl>
-                    <Popover>
-                      <PopoverTrigger className="w-full">
-                        <Input {...field} placeholder="#F4F4F4" />
-                      </PopoverTrigger>
-                      <PopoverContent className="p-0 w-fit border-0 overflow-hidden">
-                        <HexColorPicker color={field.value} onChange={e => form.setValue('color', e, { shouldValidate: true })} />
-                      </PopoverContent>
-                    </Popover>
+                    <Input placeholder="pen" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

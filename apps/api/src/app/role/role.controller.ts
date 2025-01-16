@@ -27,7 +27,7 @@ export class RoleController {
   async paginate(@Query() query: PaginationDto, @Res() res: Response) {
     const roles = await this.roleService.paginate(query)
 
-    return res.status(HttpStatus.CREATED).json(roles)
+    return res.status(HttpStatus.OK).json(roles)
   }
 
   @Post('create')

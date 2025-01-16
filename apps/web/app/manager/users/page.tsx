@@ -58,7 +58,7 @@ const Users: Page = async ({ searchParams }) => {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink>
+                <BreadcrumbLink asChild>
                   <Link href="#">Manager</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
@@ -66,7 +66,7 @@ const Users: Page = async ({ searchParams }) => {
               <BreadcrumbSeparator className="hidden md:block" />
 
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink>
+                <BreadcrumbLink asChild>
                   <Link href="/manager/users">Users</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
