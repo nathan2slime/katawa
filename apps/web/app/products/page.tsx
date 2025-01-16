@@ -19,7 +19,7 @@ const Products = () => {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink>
+                  <BreadcrumbLink asChild>
                     <Link href="/">Loja</Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
@@ -27,7 +27,7 @@ const Products = () => {
                 <BreadcrumbSeparator className="hidden md:block" />
 
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink>
+                  <BreadcrumbLink asChild>
                     <Link href="/products">Products</Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>

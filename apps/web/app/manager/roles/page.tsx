@@ -46,7 +46,7 @@ const MyRoles: Page = async ({ searchParams }) => {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink>
+                <BreadcrumbLink asChild>
                   <Link href="#">Manager</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
@@ -54,7 +54,7 @@ const MyRoles: Page = async ({ searchParams }) => {
               <BreadcrumbSeparator className="hidden md:block" />
 
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink>
+                <BreadcrumbLink asChild>
                   <Link href="/manager/roles">Roles</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>

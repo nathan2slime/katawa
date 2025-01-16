@@ -17,7 +17,7 @@ const Index: Page = () => {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink>
+                  <BreadcrumbLink asChild>
                     <Link href="/">Loja</Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>

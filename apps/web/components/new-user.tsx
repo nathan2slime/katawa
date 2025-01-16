@@ -16,6 +16,7 @@ import { NewUserFormValues, newUserSchema } from '~/lib/schemas/new-user.schema'
 type Props = {
   onCreate: (data: UserWithRole) => void
 }
+
 export const NewUser = ({ onCreate }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
