@@ -1,0 +1,12 @@
+model Asset {
+    id     String      @id @default(cuid())
+    origin AssetOrigin @default(FIRESTORAGE)
+    url    String
+    slug   String
+
+    products ProductVariant[]
+}
+
+enum AssetOrigin {
+    FIRESTORAGE
+}

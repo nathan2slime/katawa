@@ -5,6 +5,8 @@ import { JwtModule } from '@nestjs/jwt'
 
 import { AuthModule } from '~/app/auth/auth.module'
 import { CategoryModule } from '~/app/category/category.module'
+import { ProductVariantModule } from '~/app/product-variant/product-variant.module'
+import { ProductModule } from '~/app/product/product.module'
 import { RoleModule } from '~/app/role/role.module'
 import configuration from '~/config'
 import { PrismaModule } from '~/database/prisma/prisma.module'
@@ -17,6 +19,8 @@ import { LoggerModule } from '~/logger/logger.module'
     AuthModule,
     RedisModule,
     PrismaModule,
+    ProductModule,
+    ProductVariantModule,
     CategoryModule,
     RoleModule,
     JwtModule.register({
