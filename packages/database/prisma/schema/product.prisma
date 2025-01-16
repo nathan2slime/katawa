@@ -1,7 +1,7 @@
 model Product {
     id          String           @id @default(cuid())
     name        String
-    description String?
+    description String
     categories  Category[]
     variants    ProductVariant[]
     createdAt   DateTime         @default(now())
@@ -15,6 +15,7 @@ model ProductVariant {
     product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
     sku        String   @unique
     attributes Json
+    assets     Asset[]
     price      Float
     stock      Int
     createdAt  DateTime @default(now())
